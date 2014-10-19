@@ -1,0 +1,9 @@
+#ifndef _COMMON_COMMAND_HPP_
+#define _COMMON_COMMAND_HPP_
+
+enum Command {
+    COMMAND_CL_BEGIN = 1001,
+    COMMAND_LC_BEGIN = 2001,
+};
+
+#endif // _COMMON_COMMAND_HPP_
