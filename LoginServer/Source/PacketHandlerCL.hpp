@@ -3,7 +3,7 @@
 
 #include <Metazion/Overall.hpp>
 
-#include "SocketCL.hpp"
+#include "Sockets.hpp"
 
 class PacketHandlerCL {
     DISALLOW_COPY_AND_ASSIGN(PacketHandlerCL)
@@ -14,11 +14,11 @@ public:
     ~PacketHandlerCL() {}
 
 public:
-    void Handle(ServerSocketCL* socket
+    void Handle(GameServerSocket* socket
         , int command, const void* data, int length);
 
 private:
-    void HandleLogin(ServerSocketCL* socket, const void* data, int length);
+    void HandleLogin(GameServerSocket* socket, const void* data, int length);
 };
 
 #endif // _LOGINSERVER_PACKETHANDLERCL_HPP_

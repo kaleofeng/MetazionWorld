@@ -5,12 +5,12 @@
 #include <Metazion/Net/AppServerSocket.hpp>
 #include <Metazion/Share/Memory/ObjectPool.hpp>
 
-class ServerSocketCL
+class GameServerSocket
     : public NS_MZ_NET::AppServerSocket {
 public:
-    ServerSocketCL() {}
+    GameServerSocket() {}
 
-    ~ServerSocketCL() {}
+    ~GameServerSocket() {}
 
 public:
     void OnConnected() override;
@@ -23,16 +23,16 @@ public:
 };
 
 
-class ListenSocketCL
+class GameListenSocket
     : public NS_MZ_NET::AppListenSocket {
 
-    typedef NS_MZ_SHARE::ObjectPool<ServerSocketCL
-        , NS_MZ_SHARE::StepAllocator<512 >> ServerSocketPool_t;
+    typedef NS_MZ_SHARE::ObjectPool<GameServerSocket
+        , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
 public:
-    ListenSocketCL() {}
+    GameListenSocket() {}
 
-    ~ListenSocketCL() {}
+    ~GameListenSocket() {}
 
 public:
     void OnStart() override;
@@ -40,7 +40,7 @@ public:
     void OnClose() override;
 
 protected:
-    ServerSocketCL* CreateServerSocket() override;
+    GameServerSocket* CreateServerSocket() override;
 
 private:
     ServerSocketPool_t m_socketPool;

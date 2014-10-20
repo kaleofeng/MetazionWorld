@@ -2,7 +2,7 @@
 
 #include <Metazion/Net/Network.hpp>
 
-#include "SocketCL.hpp"
+#include "Sockets.hpp"
 
 USING_NAMESPACE_MZ_NET
 
@@ -17,13 +17,13 @@ void ServerApp::Initialize() {
 
     m_socketServer.Initialize(10240, 8);
 
-    ListenSocketCL* listenSocket = new ListenSocketCL();
+    GameListenSocket* listenSocket = new GameListenSocket();
     listenSocket->Retain();
     listenSocket->SetLocalHost("0.0.0.0", 22001);
     listenSocket->Listen(100);
     m_socketServer.Attach(listenSocket);
 
-    memset(m_sockets, 0, sizeof(m_sockets));
+    ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 10240, 0);
 
     ::printf("Server startd.\n");
@@ -40,9 +40,9 @@ void ServerApp::Finalize() {
 }
 
 void ServerApp::Tick() {
-    const int size = m_socketServer.LockSockets(m_socketFilter, m_socketArray);
-    for (int i = 0; i < size; ++i) {
-        Socket* socket = m_socketArray[i];
+    const auto size = m_socketServer.LockSockets(m_socketFilter, m_socketArray);
+    for (auto i = 0; i < size; ++i) {
+        auto socket = m_socketArray[i];
         ASSERT_TRUE(!NS_MZ::IsNull(socket));
         socket->Dispatch();
     }

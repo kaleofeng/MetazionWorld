@@ -15,7 +15,7 @@ void ServerApp::Initialize() {
 
     m_socketServer.Initialize(64, 2);
 
-    memset(m_sockets, 0, sizeof(m_sockets));
+    ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 64, 0);
 
     m_loginSocket = new GameClientSocket();
@@ -40,7 +40,7 @@ void ServerApp::Finalize() {
 }
 
 void ServerApp::Tick() {
-    auto size = m_socketServer.LockSockets(m_socketFilter, m_socketArray);
+    const auto size = m_socketServer.LockSockets(m_socketFilter, m_socketArray);
     for (auto i = 0; i < size; ++i) {
         auto socket = m_socketArray[i];
         ASSERT_TRUE(!NS_MZ::IsNull(socket));

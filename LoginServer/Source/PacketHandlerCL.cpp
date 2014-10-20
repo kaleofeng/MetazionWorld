@@ -3,7 +3,7 @@
 #include "Common/Packet/PacketCL.hpp"
 #include "Common/Packet/PacketLC.hpp"
 
-void PacketHandlerCL::Handle(ServerSocketCL* socket
+void PacketHandlerCL::Handle(GameServerSocket* socket
     , int command, const void* data, int length) {
     ::printf("Command[%d] data[%p] length[%d]\n", command, data, length);
 
@@ -15,7 +15,7 @@ void PacketHandlerCL::Handle(ServerSocketCL* socket
     }
 }
 
-void PacketHandlerCL::HandleLogin(ServerSocketCL* socket, const void* data, int length) {
+void PacketHandlerCL::HandleLogin(GameServerSocket* socket, const void* data, int length) {
     auto req = static_cast<const LoginCL*>(data);
     ::printf("Login: username[%s] password[%s]\n", req->m_username, req->m_password);
 
