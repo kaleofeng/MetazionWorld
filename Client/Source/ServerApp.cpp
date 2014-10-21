@@ -18,9 +18,9 @@ void ServerApp::Initialize() {
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 64, 0);
 
-    m_loginSocket = new GameClientSocket();
+    m_loginSocket = new ClientSocketCL();
     m_loginSocket->Retain();
-    m_loginSocket->SetRemoteHost("192.168.1.101", 22001);
+    m_loginSocket->SetRemoteHost("192.168.3.75", 22001);
     m_loginSocket->SetReconnectInterval(5000);
     m_loginSocket->Connect();
     m_socketServer.Attach(m_loginSocket);

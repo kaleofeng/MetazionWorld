@@ -5,42 +5,41 @@
 #include <Metazion/Net/AppServerSocket.hpp>
 #include <Metazion/Share/Memory/ObjectPool.hpp>
 
-class GameServerSocket
+class ServerSocketCL
     : public NS_MZ_NET::AppServerSocket {
 public:
-    GameServerSocket() {}
+    ServerSocketCL() {}
 
-    ~GameServerSocket() {}
+    ~ServerSocketCL() {}
 
-public:
-    void OnConnected() override;
+protected:
+    void OnConnected() override final;
 
-    void OnDisconnected() override;
+    void OnDisconnected() override final;
 
-    void OnValidPacket(int command, const void* data, int length) override;
+    void OnValidPacket(int command, const void* data, int length) override final;
 
-    void OnInvalidPacket() override;
+    void OnInvalidPacket() override final;
 };
 
 
-class GameListenSocket
+class ListenSocketCL
     : public NS_MZ_NET::AppListenSocket {
 
-    typedef NS_MZ_SHARE::ObjectPool<GameServerSocket
+    typedef NS_MZ_SHARE::ObjectPool<ServerSocketCL
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
 public:
-    GameListenSocket() {}
+    ListenSocketCL() {}
 
-    ~GameListenSocket() {}
-
-public:
-    void OnStart() override;
-
-    void OnClose() override;
+    ~ListenSocketCL() {}
 
 protected:
-    GameServerSocket* CreateServerSocket() override;
+    void OnWatched() override final;
+
+    void OnUnwatched() override final;
+
+    ServerSocketCL* CreateServerSocket() override final;
 
 private:
     ServerSocketPool_t m_socketPool;

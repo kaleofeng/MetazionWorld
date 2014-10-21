@@ -2,18 +2,18 @@
 
 #include "ServerApp.hpp"
 
-void GameClientSocket::OnConnected() {
-    AppClientSocket::OnConnected();
+void ClientSocketCL::OnConnected() {
+    ::printf("ClientSocket to Login Connected\n");
 }
 
-void GameClientSocket::OnDisconnected() {
-    AppClientSocket::OnDisconnected();
+void ClientSocketCL::OnDisconnected() {
+    ::printf("ClientSocket to Login Disconnected\n");
 }
 
-void GameClientSocket::OnValidPacket(int command, const void* data, int length) {
+void ClientSocketCL::OnValidPacket(int command, const void* data, int length) {
     g_serverApp->m_packetHandlerLC.Handle(command, data, length);
 }
 
-void GameClientSocket::OnInvalidPacket() {
+void ClientSocketCL::OnInvalidPacket() {
     Close();
 }

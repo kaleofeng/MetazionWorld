@@ -2,31 +2,32 @@
 
 #include "ServerApp.hpp"
 
-void GameServerSocket::OnConnected() {
-    AppServerSocket::OnConnected();
+void ServerSocketCL::OnConnected() {
+    ::printf("ServerSocket from Client Connected\n");
 }
 
-void GameServerSocket::OnDisconnected() {
-    AppServerSocket::OnDisconnected();
+void ServerSocketCL::OnDisconnected() {
+    ::printf("ServerSocket from Client Disconnected\n");
 }
 
-void GameServerSocket::OnValidPacket(int command, const void* data, int length) {
+void ServerSocketCL::OnValidPacket(int command, const void* data, int length) {
     g_serverApp->m_packetHandlerCL.Handle(this, command, data, length);
 }
 
-void GameServerSocket::OnInvalidPacket() {
+void ServerSocketCL::OnInvalidPacket() {
     Close();
 }
 
-void GameListenSocket::OnStart() {
-    AppListenSocket::OnStart();
+
+void ListenSocketCL::OnWatched() {
+    ::printf("ListenSocket for Client Watched\n");
 }
 
-void GameListenSocket::OnClose() {
-    AppListenSocket::OnClose();
+void ListenSocketCL::OnUnwatched() {
+    ::printf("ListenSocket for Client Unwatched\n");
 }
 
-GameServerSocket* GameListenSocket::CreateServerSocket() {
+ServerSocketCL* ListenSocketCL::CreateServerSocket() {
     auto socket = m_socketPool.Obtain();
     socket->Reset();
     socket->Retain();

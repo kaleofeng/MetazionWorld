@@ -21,7 +21,7 @@ public:
     void Tick();
 
 public:
-    GameClientSocket* m_loginSocket;
+    ClientSocketCL* m_loginSocket;
     PacketHandlerLC m_packetHandlerLC;
 
 private:

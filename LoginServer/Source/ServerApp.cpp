@@ -17,7 +17,7 @@ void ServerApp::Initialize() {
 
     m_socketServer.Initialize(10240, 8);
 
-    GameListenSocket* listenSocket = new GameListenSocket();
+    ListenSocketCL* listenSocket = new ListenSocketCL();
     listenSocket->Retain();
     listenSocket->SetLocalHost("0.0.0.0", 22001);
     listenSocket->Listen(100);

@@ -2,14 +2,14 @@
 
 #include <Metazion/Net/AppClientSocket.hpp>
 
-class GameClientSocket
+class ClientSocketCL
     : public NS_MZ_NET::AppClientSocket {
 public:
-    GameClientSocket() {}
+    ClientSocketCL() {}
 
-    ~GameClientSocket() {}
+    ~ClientSocketCL() {}
 
-public:
+protected:
     void OnConnected() override final;
 
     void OnDisconnected() override final;
