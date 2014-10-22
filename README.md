@@ -1,4 +1,4 @@
 MetazionWorld
 =============
 
-MMORPG Game Server And Client
+MMORPG Game Server and Client
