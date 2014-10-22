@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _CLIENT_CONSOLETHREAD_HPP_
+#define _CLIENT_CONSOLETHREAD_HPP_
 
 #include <Metazion/Share/Thread/Thread.hpp>
 
@@ -24,3 +25,5 @@ private:
 private:
     bool m_stopDesired;
 };
+
+#endif // _CLIENT_CONSOLETHREAD_HPP_

@@ -13,20 +13,26 @@ ServerApp::ServerApp() {}
 ServerApp::~ServerApp() {}
 
 void ServerApp::Initialize() {
+    ::printf("LoginServer start.\n");
+
     Network::Startup();
 
-    m_socketServer.Initialize(10240, 8);
+    m_socketServer.Initialize(1024, 8);
 
-    ListenSocketCL* listenSocket = new ListenSocketCL();
-    listenSocket->Retain();
-    listenSocket->SetLocalHost("0.0.0.0", 22001);
-    listenSocket->Listen(100);
-    m_socketServer.Attach(listenSocket);
+    ListenSocketCL* listenSocketCL = new ListenSocketCL();
+    listenSocketCL->Retain();
+    listenSocketCL->SetLocalHost("0.0.0.0", 22001);
+    listenSocketCL->Listen(100);
+    m_socketServer.Attach(listenSocketCL);
+
+    ListenSocketWL* listenSocketWL = new ListenSocketWL();
+    listenSocketWL->Retain();
+    listenSocketWL->SetLocalHost("0.0.0.0", 22002);
+    listenSocketWL->Listen(100);
+    m_socketServer.Attach(listenSocketWL);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
-    m_socketArray.Attach(m_sockets, 10240, 0);
-
-    ::printf("Server startd.\n");
+    m_socketArray.Attach(m_sockets, 1024, 0);
 }
 
 void ServerApp::Finalize() {
@@ -36,7 +42,7 @@ void ServerApp::Finalize() {
 
     Network::Cleanup();
 
-    ::printf("Server stoped.\n");
+    ::printf("LoginServer stop.\n");
 }
 
 void ServerApp::Tick() {

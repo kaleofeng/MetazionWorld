@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _CLIENT_SERVERAPP_HPP_
+#define _CLIENT_SERVERAPP_HPP_
 
 #include <Metazion/Share/Pattern/Singleton.hpp>
 #include <Metazion/Net/AppSocketServer.hpp>
@@ -21,8 +22,11 @@ public:
     void Tick();
 
 public:
-    ClientSocketCL* m_loginSocket;
+    ClientSocketCL* m_socketCL;
+    ClientSocketCG* m_socketCG;
+
     PacketHandlerLC m_packetHandlerLC;
+    PacketHandlerLC m_packetHandlerGC;
 
 private:
     NS_MZ_NET::AppSocketServer m_socketServer;
@@ -33,3 +37,5 @@ private:
 };
 
 extern ServerApp* g_serverApp;
+
+#endif // _CLIENT_SERVERAPP_HPP_

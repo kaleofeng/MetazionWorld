@@ -44,10 +44,10 @@ void ConsoleThread::Process(const char* command) {
 
         ::printf("Login: name[%s] password[%s]\n", name, password);
 
-        LoginCL req;
+        PlayerLoginCL req;
         strcpy(req.m_username, name);
         strcpy(req.m_password, password);
-        g_serverApp->m_loginSocket->SendData(req.COMMAND, &req, sizeof(req));
+        g_serverApp->m_socketCL->SendData(req.COMMAND, &req, sizeof(req));
     }
     else if (strcmp(command, "exit") == 0) {
         ::exit(0);

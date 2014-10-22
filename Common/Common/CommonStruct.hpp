@@ -1,17 +1,6 @@
-#ifndef _COMMON_MESSAGE_COMMONSTRUCT_HPP_
-#define _COMMON_MESSAGE_COMMONSTRUCT_HPP_
-
-#include <Metazion/Net/Address.hpp>
+#ifndef _COMMON_COMMONSTRUCT_HPP_
+#define _COMMON_COMMONSTRUCT_HPP_
 
 #include "Common/CommonDefine.hpp"
 
-struct ServerInfo {
-    ServerInfo() {
-        ::memset(m_name, '\0', sizeof(m_name));
-    }
-    
-    char m_name[32];
-    NS_MZ_NET::Address m_address;
-};
-
-#endif // _COMMON_MESSAGE_COMMONSTRUCT_HPP_
+#endif // _COMMON_PACKET_COMMONSTRUCT_HPP_

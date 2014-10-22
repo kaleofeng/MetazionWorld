@@ -1,10 +1,9 @@
-#pragma once
+#ifndef _CLIENT_PACKETHANDLERLC_HPP_
+#define _CLIENT_PACKETHANDLERLC_HPP_
 
-#include <Metazion/Overall.hpp>
+#include "Sockets.hpp"
 
 class PacketHandlerLC {
-    DISALLOW_COPY_AND_ASSIGN(PacketHandlerLC)
-
 public:
     PacketHandlerLC() {}
 
@@ -14,5 +13,13 @@ public:
     void Handle(int command, const void* data, int length);
 
 private:
-    void HandleLogin(const void* data, int length);
+     void HandleConnected(const void* data, int length);
+
+     void HandleDisconnected(const void* data, int length);
+
+    void HandlePlayerLogin(const void* data, int length);
+
+    void HandleServerList(const void* data, int length);
 };
+
+#endif // _CLIENT_PACKETHANDLERLC_HPP_

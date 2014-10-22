@@ -1,16 +1,17 @@
-#ifndef _LOGINSERVER_SOCKETS_HPP_
-#define _LOGINSERVER_SOCKETS_HPP_
+#ifndef _MASTERSERVER_SOCKETS_HPP_
+#define _MASTERSERVER_SOCKETS_HPP_
 
+#include <Metazion/Net/AppClientSocket.hpp>
 #include <Metazion/Net/AppListenSocket.hpp>
 #include <Metazion/Net/AppServerSocket.hpp>
 #include <Metazion/Share/Memory/ObjectPool.hpp>
 
-class ServerSocketCL
+class ServerSocketWM
     : public NS_MZ_NET::AppServerSocket {
 public:
-    ServerSocketCL() {}
+    ServerSocketWM() {}
 
-    ~ServerSocketCL() {}
+    ~ServerSocketWM() {}
 
 protected:
     void OnConnected() override final;
@@ -23,35 +24,35 @@ protected:
 };
 
 
-class ListenSocketCL
+class ListenSocketWM
     : public NS_MZ_NET::AppListenSocket {
 
-    typedef NS_MZ_SHARE::ObjectPool<ServerSocketCL
+    typedef NS_MZ_SHARE::ObjectPool<ServerSocketWM
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
 public:
-    ListenSocketCL() {}
+    ListenSocketWM() {}
 
-    ~ListenSocketCL() {}
+    ~ListenSocketWM() {}
 
 protected:
     void OnWatched() override final;
 
     void OnUnwatched() override final;
 
-    ServerSocketCL* CreateServerSocket() override final;
+    ServerSocketWM* CreateServerSocket() override final;
 
 private:
     ServerSocketPool_t m_socketPool;
 };
 
 
-class ServerSocketWL
-    : public NS_MZ_NET::AppServerSocket {
+class ClientSocketML
+    : public NS_MZ_NET::AppClientSocket {
 public:
-    ServerSocketWL() {}
+    ClientSocketML() {}
 
-    ~ServerSocketWL() {}
+    ~ClientSocketML() {}
 
 protected:
     void OnConnected() override final;
@@ -64,26 +65,21 @@ protected:
 };
 
 
-class ListenSocketWL
-    : public NS_MZ_NET::AppListenSocket {
-
-    typedef NS_MZ_SHARE::ObjectPool<ServerSocketWL
-        , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
-
+class ClientSocketMG
+    : public NS_MZ_NET::AppClientSocket {
 public:
-    ListenSocketWL() {}
+    ClientSocketMG() {}
 
-    ~ListenSocketWL() {}
+    ~ClientSocketMG() {}
 
 protected:
-    void OnWatched() override final;
+    void OnConnected() override final;
 
-    void OnUnwatched() override final;
+    void OnDisconnected() override final;
 
-    ServerSocketWL* CreateServerSocket() override final;
+    void OnValidPacket(int command, const void* data, int length) override final;
 
-private:
-    ServerSocketPool_t m_socketPool;
+    void OnInvalidPacket() override final;
 };
 
-#endif // _LOGINSERVER_SOCKETS_HPP_
+#endif // _MASTERSERVER_SOCKETS_HPP_
