@@ -19,7 +19,7 @@ void ServerApp::Initialize() {
 
     Network::Startup();
 
-    m_socketServer.Initialize(10240, 8);
+    m_socketServer.Initialize(1024, 8);
 
     ListenSocketWM* listenSocket = new ListenSocketWM();
     listenSocket->Retain();
@@ -29,20 +29,20 @@ void ServerApp::Initialize() {
 
     m_socketMG = new ClientSocketMG();
     m_socketMG->Retain();
-    m_socketMG->SetRemoteHost("192.168.1.101", 23001);
+    m_socketMG->SetRemoteHost("192.168.3.75", 23002);
     m_socketMG->SetReconnectInterval(10000);
     m_socketMG->Connect();
     m_socketServer.Attach(m_socketMG);
 
     m_socketML = new ClientSocketML();
     m_socketML->Retain();
-    m_socketML->SetRemoteHost("192.168.1.101", 22002);
+    m_socketML->SetRemoteHost("192.168.3.75", 22002);
     m_socketML->SetReconnectInterval(10000);
     m_socketML->Connect();
     m_socketServer.Attach(m_socketML);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
-    m_socketArray.Attach(m_sockets, 10240, 0);
+    m_socketArray.Attach(m_sockets, 1024, 0);
 }
 
 void ServerApp::Finalize() {

@@ -25,12 +25,12 @@ void ClientSocketCL::OnInvalidPacket() {
 
 
 void ClientSocketCG::OnConnected() {
-    ::printf("ClientSocket to Login Connected\n");
+    ::printf("ClientSocket to Gateway Connected\n");
     PostData(COMMAND_GC_CONNECTED, nullptr, 0);
 }
 
 void ClientSocketCG::OnDisconnected() {
-    ::printf("ClientSocket to Login Disconnected\n");
+    ::printf("ClientSocket to Gateway Disconnected\n");
     PostData(COMMAND_GC_DISCONNECTED, nullptr, 0);
 }
 

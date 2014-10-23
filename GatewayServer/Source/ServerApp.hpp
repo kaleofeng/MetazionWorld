@@ -1,12 +1,10 @@
-#ifndef _MASTERSERVER_SERVERAPP_HPP_
-#define _MASTERSERVER_SERVERAPP_HPP_
+#ifndef _GATEWAYSERVER_SERVERAPP_HPP_
+#define _GATEWAYSERVER_SERVERAPP_HPP_
 
 #include <Metazion/Net/AppSocketServer.hpp>
 
-#include "PacketHandlerGM.hpp"
-#include "PacketHandlerLM.hpp"
-#include "PacketHandlerWM.hpp"
-#include "Sockets.hpp"
+#include "PacketHandlerCG.hpp"
+#include "PacketHandlerWG.hpp"
 
 class ServerApp {
 public:
@@ -22,12 +20,8 @@ public:
     void Tick();
 
 public:
-    ClientSocketMG* m_socketMG;
-    ClientSocketML* m_socketML;
-
-    PacketHandlerGM m_packetHandlerGM;
-    PacketHandlerLM m_packetHandlerLM;
-    PacketHandlerWM m_packetHandlerWM;
+    PacketHandlerCG m_packetHandlerCG;
+    PacketHandlerWG m_packetHandlerWG;
 
 private:
     NS_MZ_NET::AppSocketServer m_socketServer;
@@ -38,4 +32,4 @@ private:
 
 extern ServerApp* g_serverApp;
 
-#endif // _MASTERSERVER_SERVERAPP_HPP_
+#endif // _GATEWAYSERVER_SERVERAPP_HPP_

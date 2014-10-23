@@ -24,14 +24,14 @@ void ServerApp::Initialize() {
 
     m_socketCL = new ClientSocketCL();
     m_socketCL->Retain();
-    m_socketCL->SetRemoteHost("192.168.1.101", 22001);
+    m_socketCL->SetRemoteHost("192.168.3.75", 22001);
     m_socketCL->SetReconnectInterval(10000);
     m_socketCL->Connect();
     m_socketServer.Attach(m_socketCL);
 
     m_socketCG = new ClientSocketCG();
     m_socketCG->Retain();
-    m_socketCG->SetRemoteHost("192.168.1.101", 23001);
+    m_socketCG->SetRemoteHost("192.168.3.75", 23001);
     m_socketCG->SetReconnectInterval(10000);
     m_socketCG->Connect();
     m_socketServer.Attach(m_socketCG);
