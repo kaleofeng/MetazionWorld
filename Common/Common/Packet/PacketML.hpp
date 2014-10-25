@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETML_HPP_
-#define _COMMON_PACKET_PACKETML_HPP_
+#ifndef _COMMON_PACKETML_HPP_
+#define _COMMON_PACKETML_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandML {
@@ -10,4 +10,4 @@ enum CommandML {
     COMMAND_ML_END,
 };
 
-#endif // _COMMON_PACKET_PACKETML_HPP_
+#endif // _COMMON_PACKETML_HPP_

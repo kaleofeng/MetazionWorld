@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETCG_HPP_
-#define _COMMON_PACKET_PACKETCG_HPP_
+#ifndef _COMMON_PACKETCG_HPP_
+#define _COMMON_PACKETCG_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandCG {
@@ -10,4 +10,4 @@ enum CommandCG {
     COMMAND_CG_END,
 };
 
-#endif // _COMMON_PACKET_PACKETCG_HPP_
+#endif // _COMMON_PACKETCG_HPP_

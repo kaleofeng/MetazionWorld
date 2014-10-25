@@ -1,9 +1,7 @@
 #ifndef _LOGINSERVER_PACKETHANDLERCL_HPP_
 #define _LOGINSERVER_PACKETHANDLERCL_HPP_
 
-#include <Metazion/Overall.hpp>
-
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 class PacketHandlerCL {
 public:

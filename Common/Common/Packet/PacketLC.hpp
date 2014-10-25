@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETLC_HPP_
-#define _COMMON_PACKET_PACKETLC_HPP_
+#ifndef _COMMON_PACKETLC_HPP_
+#define _COMMON_PACKETLC_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandLC {
@@ -22,4 +22,4 @@ struct ServerListLC {
     enum { COMMAND = COMMAND_LC_SERVERLIST };
 };
 
-#endif // _COMMON_PACKET_PACKETLC_HPP_
+#endif // _COMMON_PACKETLC_HPP_

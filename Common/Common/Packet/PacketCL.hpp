@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETCL_HPP_
-#define _COMMON_PACKET_PACKETCL_HPP_
+#ifndef _COMMON_PACKETCL_HPP_
+#define _COMMON_PACKETCL_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandCL {
@@ -23,4 +23,4 @@ struct PlayerLoginCL {
     char m_password[32];
 };
 
-#endif // _COMMON_PACKET_PACKETCL_HPP_
+#endif // _COMMON_PACKETCL_HPP_

@@ -2,7 +2,7 @@
 
 #include <Metazion/Net/Network.hpp>
 
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 USING_NAMESPACE_MZ_NET
 
@@ -17,28 +17,40 @@ void ServerApp::Initialize() {
 
     Network::Startup();
 
+    m_serverManager.Initialize();
+
     m_socketServer.Initialize(1024, 8);
-
-    ListenSocketCL* listenSocketCL = new ListenSocketCL();
-    listenSocketCL->Retain();
-    listenSocketCL->SetLocalHost("0.0.0.0", 22001);
-    listenSocketCL->Listen(100);
-    m_socketServer.Attach(listenSocketCL);
-
-    ListenSocketWL* listenSocketWL = new ListenSocketWL();
-    listenSocketWL->Retain();
-    listenSocketWL->SetLocalHost("0.0.0.0", 22002);
-    listenSocketWL->Listen(100);
-    m_socketServer.Attach(listenSocketWL);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
+    
+    const auto loginInfo = m_serverManager.GetLoginInfo();
+
+    Host hostCl;
+    hostCl.FromAddress(loginInfo.m_publicAddress);
+
+    auto listenSocketCL = new ListenSocketCL();
+    listenSocketCL->Retain();
+    listenSocketCL->SetLocalHost(hostCl);
+    listenSocketCL->Listen(100);
+    m_socketServer.Attach(listenSocketCL);
+
+    Host hostWL;
+    hostWL.FromAddress(loginInfo.m_privateAddress);
+
+    auto listenSocketWL = new ListenSocketWL();
+    listenSocketWL->Retain();
+    listenSocketWL->SetLocalHost(hostWL);
+    listenSocketWL->Listen(100);
+    m_socketServer.Attach(listenSocketWL);
 }
 
 void ServerApp::Finalize() {
     m_socketArray.Detach();
 
     m_socketServer.Finalize();
+
+    m_serverManager.Finalize();
 
     Network::Cleanup();
 

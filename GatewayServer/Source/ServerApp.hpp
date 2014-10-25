@@ -3,8 +3,10 @@
 
 #include <Metazion/Net/AppSocketServer.hpp>
 
-#include "PacketHandlerCG.hpp"
-#include "PacketHandlerWG.hpp"
+#include "Common/Server/ServerManager.hpp"
+
+#include "Net/PacketHandlerCG.hpp"
+#include "Net/PacketHandlerWG.hpp"
 
 class ServerApp {
 public:
@@ -20,6 +22,8 @@ public:
     void Tick();
 
 public:
+    ServerManager m_serverManager;
+
     PacketHandlerCG m_packetHandlerCG;
     PacketHandlerWG m_packetHandlerWG;
 

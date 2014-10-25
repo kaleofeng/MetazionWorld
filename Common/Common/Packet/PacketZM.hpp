@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETZM_HPP_
-#define _COMMON_PACKET_PACKETZM_HPP_
+#ifndef _COMMON_PACKETZM_HPP_
+#define _COMMON_PACKETZM_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandZM {
@@ -10,4 +10,4 @@ enum CommandZM {
     COMMAND_ZM_END,
 };
 
-#endif // _COMMON_PACKET_PACKETZM_HPP_
+#endif // _COMMON_PACKETZM_HPP_

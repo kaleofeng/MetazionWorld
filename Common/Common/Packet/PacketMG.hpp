@@ -1,7 +1,7 @@
-#ifndef _COMMON_PACKET_PACKETMG_HPP_
-#define _COMMON_PACKET_PACKETMG_HPP_
+#ifndef _COMMON_PACKETMG_HPP_
+#define _COMMON_PACKETMG_HPP_
 
-#include "Common/CommonStruct.hpp"
+#include "Common/Struct.hpp"
 #include "Common/Packet/Command.hpp"
 
 enum CommandMG {
@@ -10,4 +10,4 @@ enum CommandMG {
     COMMAND_MG_END,
 };
 
-#endif // _COMMON_PACKET_PACKETMG_HPP_
+#endif // _COMMON_PACKETMG_HPP_

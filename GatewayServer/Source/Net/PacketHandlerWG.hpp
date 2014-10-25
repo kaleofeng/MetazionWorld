@@ -1,9 +1,7 @@
 #ifndef _GATEWAYSERVER_PACKETHANDLERWG_HPP_
 #define _GATEWAYSERVER_PACKETHANDLERWG_HPP_
 
-#include <Metazion/Overall.hpp>
-
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 class PacketHandlerWG {
 public:

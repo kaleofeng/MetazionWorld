@@ -1,5 +1,5 @@
-#ifndef _COMMON_PACKET_COMMAND_HPP_
-#define _COMMON_PACKET_COMMAND_HPP_
+#ifndef _COMMON_COMMAND_HPP_
+#define _COMMON_COMMAND_HPP_
 
 enum Command {
     COMMAND_CL_BEGIN = 1001,
@@ -21,4 +21,4 @@ enum Command {
     COMMAND_MZ_BEGIN = 12001,
 };
 
-#endif // _COMMON_PACKET_COMMAND_HPP_
+#endif // _COMMON_COMMAND_HPP_

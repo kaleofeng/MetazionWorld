@@ -3,10 +3,12 @@
 
 #include <Metazion/Net/AppSocketServer.hpp>
 
-#include "PacketHandlerGM.hpp"
-#include "PacketHandlerLM.hpp"
-#include "PacketHandlerWM.hpp"
-#include "Sockets.hpp"
+#include "Common/Server/ServerManager.hpp"
+
+#include "Net/PacketHandlerGM.hpp"
+#include "Net/PacketHandlerLM.hpp"
+#include "Net/PacketHandlerWM.hpp"
+#include "Net/Sockets.hpp"
 
 class ServerApp {
 public:
@@ -22,6 +24,8 @@ public:
     void Tick();
 
 public:
+    ServerManager m_serverManager;
+
     ClientSocketMG* m_socketMG;
     ClientSocketML* m_socketML;
 

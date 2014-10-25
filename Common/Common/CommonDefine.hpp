@@ -1,6 +1,0 @@
-#ifndef _COMMON_PACKET_COMMONDEFINE_HPP_
-#define _COMMON_PACKET_COMMONDEFINE_HPP_
-
-#include <Metazion/Overall.hpp>
-
-#endif // _COMMON_PACKET_COMMONDEFINE_HPP_

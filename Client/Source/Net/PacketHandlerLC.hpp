@@ -1,7 +1,7 @@
 #ifndef _CLIENT_PACKETHANDLERLC_HPP_
 #define _CLIENT_PACKETHANDLERLC_HPP_
 
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 class PacketHandlerLC {
 public:

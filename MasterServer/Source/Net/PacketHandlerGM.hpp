@@ -1,9 +1,7 @@
 #ifndef _MASTERSERVER_PACKETHANDLERGM_HPP_
 #define _MASTERSERVER_PACKETHANDLERGM_HPP_
 
-#include <Metazion/Overall.hpp>
-
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 class PacketHandlerGM {
     DISALLOW_COPY_AND_ASSIGN(PacketHandlerGM)

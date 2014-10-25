@@ -1,9 +1,7 @@
 #ifndef _MASTERSERVER_PACKETHANDLERLM_HPP_
 #define _MASTERSERVER_PACKETHANDLERLM_HPP_
 
-#include <Metazion/Overall.hpp>
-
-#include "Sockets.hpp"
+#include "Net/Sockets.hpp"
 
 class PacketHandlerLM {
     DISALLOW_COPY_AND_ASSIGN(PacketHandlerLM)

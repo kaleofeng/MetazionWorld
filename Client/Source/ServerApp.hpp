@@ -1,14 +1,15 @@
 #ifndef _CLIENT_SERVERAPP_HPP_
 #define _CLIENT_SERVERAPP_HPP_
 
-#include <Metazion/Share/Pattern/Singleton.hpp>
 #include <Metazion/Net/AppSocketServer.hpp>
 
-#include "ConsoleThread.hpp"
-#include "PacketHandlerLC.hpp"
-#include "Sockets.hpp"
+#include "Common/Server/ServerManager.hpp"
 
-class ServerApp : public NS_MZ_SHARE::Singleton<ServerApp> {
+#include "ConsoleThread.hpp"
+#include "Net/PacketHandlerLC.hpp"
+#include "Net/Sockets.hpp"
+
+class ServerApp {
 public:
     ServerApp();
 
@@ -22,6 +23,8 @@ public:
     void Tick();
 
 public:
+    ServerManager m_serverManager;
+
     ClientSocketCL* m_socketCL;
     ClientSocketCG* m_socketCG;
 

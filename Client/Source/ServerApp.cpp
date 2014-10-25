@@ -17,21 +17,33 @@ void ServerApp::Initialize() {
 
     Network::Startup();
 
+    m_serverManager.Initialize();
+
     m_socketServer.Initialize(64, 2);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 64, 0);
 
+    const auto loginInfo = m_serverManager.GetLoginInfo();
+    const auto gatewayInfo = m_serverManager.GetGatewayInfo(1);
+    ASSERT_TRUE(!NS_MZ::IsNull(gatewayInfo));
+
+    Host hostCL;
+    hostCL.FromAddress(loginInfo.m_publicAddress);
+
     m_socketCL = new ClientSocketCL();
     m_socketCL->Retain();
-    m_socketCL->SetRemoteHost("192.168.3.75", 22001);
+    m_socketCL->SetRemoteHost(hostCL);
     m_socketCL->SetReconnectInterval(10000);
     m_socketCL->Connect();
     m_socketServer.Attach(m_socketCL);
 
+    Host hostCG;
+    hostCG.FromAddress(gatewayInfo->m_publicAddress);
+
     m_socketCG = new ClientSocketCG();
     m_socketCG->Retain();
-    m_socketCG->SetRemoteHost("192.168.3.75", 23001);
+    m_socketCG->SetRemoteHost(hostCG);
     m_socketCG->SetReconnectInterval(10000);
     m_socketCG->Connect();
     m_socketServer.Attach(m_socketCG);
@@ -46,6 +58,8 @@ void ServerApp::Finalize() {
     m_socketArray.Detach();
 
     m_socketServer.Finalize();
+
+    m_serverManager.Finalize();
 
     Network::Cleanup();
 
