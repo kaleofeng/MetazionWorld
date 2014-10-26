@@ -3,7 +3,7 @@
 
 #include <Metazion/Net/AppSocketServer.hpp>
 
-#include "Common/Server/ServerManager.hpp"
+#include "Common/Server/ServerConfigManager.hpp"
 
 #include "ConsoleThread.hpp"
 #include "Net/PacketHandlerLC.hpp"
@@ -23,7 +23,7 @@ public:
     void Tick();
 
 public:
-    ServerManager m_serverManager;
+    ServerConfigManager m_serverConfigManager;
 
     ClientSocketCL* m_socketCL;
     ClientSocketCG* m_socketCG;

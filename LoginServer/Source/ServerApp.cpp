@@ -17,17 +17,17 @@ void ServerApp::Initialize() {
 
     Network::Startup();
 
-    m_serverManager.Initialize();
+    m_serverConfigManager.Initialize();
 
     m_socketServer.Initialize(1024, 8);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
     
-    const auto loginInfo = m_serverManager.GetLoginInfo();
+    const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
 
     Host hostCl;
-    hostCl.FromAddress(loginInfo.m_publicAddress);
+    hostCl.FromAddress(loginConfig.m_publicAddress);
 
     auto listenSocketCL = new ListenSocketCL();
     listenSocketCL->Retain();
@@ -36,7 +36,7 @@ void ServerApp::Initialize() {
     m_socketServer.Attach(listenSocketCL);
 
     Host hostWL;
-    hostWL.FromAddress(loginInfo.m_privateAddress);
+    hostWL.FromAddress(loginConfig.m_privateAddress);
 
     auto listenSocketWL = new ListenSocketWL();
     listenSocketWL->Retain();
@@ -50,7 +50,7 @@ void ServerApp::Finalize() {
 
     m_socketServer.Finalize();
 
-    m_serverManager.Finalize();
+    m_serverConfigManager.Finalize();
 
     Network::Cleanup();
 

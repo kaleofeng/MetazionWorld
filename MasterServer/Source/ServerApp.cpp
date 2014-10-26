@@ -17,20 +17,20 @@ void ServerApp::Initialize() {
 
     Network::Startup();
 
-    m_serverManager.Initialize();
+    m_serverConfigManager.Initialize();
 
     m_socketServer.Initialize(1024, 8);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
     
-    const auto loginInfo = m_serverManager.GetLoginInfo();
-    const auto masterInfo = m_serverManager.GetMasterInfo();
-    const auto gatewayInfo = m_serverManager.GetGatewayInfo(1);
-    ASSERT_TRUE(!NS_MZ::IsNull(gatewayInfo));
+    const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
+    const auto& masterConfig = m_serverConfigManager.GetMasterConfig();
+    const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig(1);
+    ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
 
     NS_MZ_NET::Host hostWM;
-    hostWM.FromAddress(masterInfo.m_privateAddress);
+    hostWM.FromAddress(masterConfig.m_privateAddress);
 
     auto listenSocket = new ListenSocketWM();
     listenSocket->Retain();
@@ -39,7 +39,7 @@ void ServerApp::Initialize() {
     m_socketServer.Attach(listenSocket);
 
     NS_MZ_NET::Host hostMG;
-    hostMG.FromAddress(gatewayInfo->m_privateAddress);
+    hostMG.FromAddress(gatewayConfig->m_privateAddress);
 
     m_socketMG = new ClientSocketMG();
     m_socketMG->Retain();
@@ -49,7 +49,7 @@ void ServerApp::Initialize() {
     m_socketServer.Attach(m_socketMG);
 
     NS_MZ_NET::Host hostML;
-    hostML.FromAddress(loginInfo.m_privateAddress);
+    hostML.FromAddress(loginConfig.m_privateAddress);
 
     m_socketML = new ClientSocketML();
     m_socketML->Retain();
@@ -64,7 +64,7 @@ void ServerApp::Finalize() {
 
     m_socketServer.Finalize();
 
-    m_serverManager.Finalize();
+    m_serverConfigManager.Finalize();
 
     Network::Cleanup();
 
