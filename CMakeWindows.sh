@@ -1,19 +1,19 @@
 cd Common
-CMakeWindows.bat
+CMakeWindows.sh
 cd ..
 
 cd Client
-CMakeWindows.bat
+CMakeWindows.sh
 cd ..
 
 cd LoginServer
-CMakeWindows.bat
+CMakeWindows.sh
 cd ..
 
 cd GatewayServer
-CMakeWindows.bat
+CMakeWindows.sh
 cd ..
 
 cd MasterServer
-CMakeWindows.bat
+CMakeWindows.sh
 cd ..
