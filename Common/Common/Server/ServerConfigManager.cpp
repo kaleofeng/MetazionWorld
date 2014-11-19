@@ -97,7 +97,7 @@ void ServerConfigManager::LoadLoginConfig() {
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
     privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(21002);
+    privateHost.SetPort(2100);
 
     m_loginConfig.m_publicAddress = publicHost.ToAddress();
     m_loginConfig.m_privateAddress = privateHost.ToAddress();
@@ -112,7 +112,7 @@ void ServerConfigManager::LoadMasterConfig() {
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
     privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(23002);
+    privateHost.SetPort(2300);
 
     m_masterConfig.m_publicAddress = publicHost.ToAddress();
     m_masterConfig.m_privateAddress = privateHost.ToAddress();
@@ -127,7 +127,7 @@ void ServerConfigManager::LoadGatewayConfig() {
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
     privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(22002);
+    privateHost.SetPort(2200);
 
     GatewayConfig gatewayConfig;
     gatewayConfig.m_id = 1;
@@ -146,7 +146,7 @@ void ServerConfigManager::LoadZoneConfig() {
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
     privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(24002);
+    privateHost.SetPort(2400);
 
     ZoneConfig zoneConfig;
     zoneConfig.m_id = 1;
