@@ -2,9 +2,13 @@
 
 #include <iostream>
 
+#include <Metazion/Share/Utility/StringFunction.hpp>
+
 #include "Common/Packet/PacketCL.hpp"
 
 #include "ServerApp.hpp"
+
+USING_NAMESPACE_MZ_SHARE
 
 ConsoleThread::ConsoleThread()
     : m_stopDesired(false) {}
@@ -45,8 +49,8 @@ void ConsoleThread::Process(const char* command) {
         ::printf("Login: name[%s] password[%s]\n", name, password);
 
         PlayerLoginCL req;
-        strcpy(req.m_username, name);
-        strcpy(req.m_password, password);
+        mzstrcpy(req.m_username, sizeof(req.m_username), name);
+        mzstrcpy(req.m_password, sizeof(req.m_password), password);
         g_serverApp->m_socketCL->SendData(req.COMMAND, &req, sizeof(req));
     }
     else if (strcmp(command, "exit") == 0) {
