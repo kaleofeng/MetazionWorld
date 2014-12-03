@@ -1,7 +1,11 @@
 #include "PacketHandlerCL.hpp"
 
+#include <Metazion/Share/Misc/MemoryOutputStream.hpp>
+
 #include "Common/Packet/PacketCL.hpp"
 #include "Common/Packet/PacketLC.hpp"
+
+#include "ServerApp.hpp"
 
 void PacketHandlerCL::Handle(ServerSocketCL* socket
     , int command, const void* data, int length) {
@@ -38,4 +42,16 @@ void PacketHandlerCL::HandlePlayerLogin(ServerSocketCL* socket
     PlayerLoginLC rsp;
     rsp.m_success = true;
     socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+
+    NS_MZ_SHARE::MemoryOutputStream<> outputStream;
+    const auto gatewaySize = g_serverApp->m_serverConfigManager.GetGatewayConfigSize();
+    outputStream.WriteInt8(gatewaySize);
+    const auto& gatewayMap = g_serverApp->m_serverConfigManager.GetAllGatewayConfig();
+    for (auto gateway : gatewayMap) {
+        const auto id = gateway.second.m_id;
+        const auto publicAddress = gateway.second.m_publicAddress;
+        outputStream.WriteInt8(id);
+        outputStream.Write(&publicAddress, sizeof(publicAddress));
+    }
+    socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
 }

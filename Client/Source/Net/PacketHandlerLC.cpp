@@ -1,5 +1,7 @@
 #include "PacketHandlerLC.hpp"
 
+#include <Metazion/Share/Misc/MemoryInputStream.hpp>
+
 #include "Common/Packet/PacketLC.hpp"
 
 void PacketHandlerLC::Handle(int command, const void* data, int length) {
@@ -36,5 +38,23 @@ void PacketHandlerLC::HandlePlayerLogin(const void* data, int length) {
 }
 
 void PacketHandlerLC::HandleServerList(const void* data, int length) {
-    const auto req = static_cast<const ServerListLC*>(data);
+    NS_MZ_SHARE::MemoryInputStream inputStream;
+    inputStream.Attach(data, length);
+
+    int8_t gatewaySize = 0;
+    inputStream.ReadInt8(gatewaySize);
+
+    ::printf("Gateway Size: %d", gatewaySize);
+
+    for (auto index = 0; index < gatewaySize; ++index) {
+        int8_t gatewayId = 0;
+        inputStream.ReadInt8(gatewayId);
+
+        ::printf("Gateway Id: %d", gatewayId);
+
+        NS_MZ_NET::Address gatewayAddress;
+        inputStream.Read(&gatewayAddress, sizeof(gatewayAddress));
+
+        ::printf("Gateway Address: ip[%u] port[%d]", gatewayAddress.m_ip, gatewayAddress.m_port);
+    }
 }
