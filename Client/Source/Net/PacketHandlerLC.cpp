@@ -43,18 +43,16 @@ void PacketHandlerLC::HandleServerList(const void* data, int length) {
 
     int8_t gatewaySize = 0;
     inputStream.ReadInt8(gatewaySize);
-
-    ::printf("Gateway Size: %d", gatewaySize);
+    ::printf("Gateway Size: %d\n", gatewaySize);
 
     for (auto index = 0; index < gatewaySize; ++index) {
         int8_t gatewayId = 0;
         inputStream.ReadInt8(gatewayId);
-
-        ::printf("Gateway Id: %d", gatewayId);
+        ::printf("Gateway Id: %d\n", gatewayId);
 
         NS_MZ_NET::Address gatewayAddress;
-        inputStream.Read(&gatewayAddress, sizeof(gatewayAddress));
-
-        ::printf("Gateway Address: ip[%u] port[%d]", gatewayAddress.m_ip, gatewayAddress.m_port);
+        inputStream.ReadUint32(gatewayAddress.m_ip);
+        inputStream.ReadUint16(gatewayAddress.m_port);
+        ::printf("Gateway Address: ip[%u] port[%d]\n", gatewayAddress.m_ip, gatewayAddress.m_port);
     }
 }

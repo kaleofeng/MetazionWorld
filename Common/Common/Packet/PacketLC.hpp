@@ -12,6 +12,8 @@ enum CommandLC {
     COMMAND_LC_END,
 };
 
+#pragma pack(push, 1)
+
 struct PlayerLoginLC {
     enum { COMMAND = COMMAND_LC_PLAYERLOGIN };
 
@@ -21,5 +23,7 @@ struct PlayerLoginLC {
 struct ServerListLC {
     enum { COMMAND = COMMAND_LC_SERVERLIST };
 };
+
+#pragma pack(pop)
 
 #endif // _COMMON_PACKETLC_HPP_

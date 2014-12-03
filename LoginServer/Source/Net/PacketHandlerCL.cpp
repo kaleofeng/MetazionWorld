@@ -51,7 +51,8 @@ void PacketHandlerCL::HandlePlayerLogin(ServerSocketCL* socket
         const auto id = gateway.second.m_id;
         const auto publicAddress = gateway.second.m_publicAddress;
         outputStream.WriteInt8(id);
-        outputStream.Write(&publicAddress, sizeof(publicAddress));
+        outputStream.WriteUint32(publicAddress.m_ip);
+        outputStream.WriteUint16(publicAddress.m_port);
     }
     socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
 }

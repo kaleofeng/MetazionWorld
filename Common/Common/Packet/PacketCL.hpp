@@ -11,6 +11,8 @@ enum CommandCL {
     COMMAND_CL_END,
 };
 
+#pragma pack(push, 1)
+
 struct PlayerLoginCL {
     enum { COMMAND = COMMAND_CL_PLAYERLOGIN, };
 
@@ -22,5 +24,7 @@ struct PlayerLoginCL {
     char m_username[32];
     char m_password[32];
 };
+
+#pragma pack(pop)
 
 #endif // _COMMON_PACKETCL_HPP_
