@@ -19,7 +19,7 @@ void ServerApp::Initialize() {
 
     m_serverConfigManager.Initialize();
 
-    m_socketServer.Initialize(1024, 8);
+    m_networkService.Initialize(1024, 8);
 
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
@@ -36,7 +36,7 @@ void ServerApp::Initialize() {
     listenSocket->Retain();
     listenSocket->SetLocalHost(hostWM);
     listenSocket->Listen(100);
-    m_socketServer.Attach(listenSocket);
+    m_networkService.Attach(listenSocket);
 
     NS_MZ_NET::Host hostMG;
     hostMG.FromAddress(gatewayConfig->m_privateAddress);
@@ -46,7 +46,7 @@ void ServerApp::Initialize() {
     m_socketMG->SetRemoteHost(hostMG);
     m_socketMG->SetReconnectInterval(10000);
     m_socketMG->Connect();
-    m_socketServer.Attach(m_socketMG);
+    m_networkService.Attach(m_socketMG);
 
     NS_MZ_NET::Host hostML;
     hostML.FromAddress(loginConfig.m_privateAddress);
@@ -56,13 +56,13 @@ void ServerApp::Initialize() {
     m_socketML->SetRemoteHost(hostML);
     m_socketML->SetReconnectInterval(10000);
     m_socketML->Connect();
-    m_socketServer.Attach(m_socketML);
+    m_networkService.Attach(m_socketML);
 }
 
 void ServerApp::Finalize() {
     m_socketArray.Detach();
 
-    m_socketServer.Finalize();
+    m_networkService.Finalize();
 
     m_serverConfigManager.Finalize();
 
@@ -72,11 +72,15 @@ void ServerApp::Finalize() {
 }
 
 void ServerApp::Tick() {
-    const auto size = m_socketServer.LockSockets(m_socketFilter, m_socketArray);
+    const auto size = m_networkService.LockSockets([](Socket* socket) {
+            return socket->GetType() != SOCKET_TCP_LISTEN;
+        }, m_socketArray);
+
     for (auto i = 0; i < size; ++i) {
         auto socket = m_socketArray[i];
         ASSERT_TRUE(!NS_MZ::IsNull(socket));
         socket->Dispatch();
     }
-    m_socketServer.UnlockSockets(m_socketArray);
+
+    m_networkService.UnlockSockets(m_socketArray);
 }

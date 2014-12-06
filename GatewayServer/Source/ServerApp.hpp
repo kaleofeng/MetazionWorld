@@ -1,7 +1,7 @@
 #ifndef _GATEWAYSERVER_SERVERAPP_HPP_
 #define _GATEWAYSERVER_SERVERAPP_HPP_
 
-#include <Metazion/Net/AppSocketServer.hpp>
+#include <Metazion/Net/AppNetworkService.hpp>
 
 #include "Common/Server/ServerConfigManager.hpp"
 
@@ -28,9 +28,8 @@ public:
     PacketHandlerWG m_packetHandlerWG;
 
 private:
-    NS_MZ_NET::AppSocketServer m_socketServer;
-    NS_MZ_NET::AppSocketServer::SocketFilter m_socketFilter;
-    NS_MZ_NET::AppSocketServer::SocketArray_t m_socketArray;
+    NS_MZ_NET::AppNetworkService m_networkService;
+    NS_MZ_NET::AppNetworkService::SocketArray_t m_socketArray;
     NS_MZ_NET::Socket* m_sockets[1024];
 };
 
