@@ -27,7 +27,7 @@ void ServerApp::Initialize() {
     const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
     const auto& masterConfig = m_serverConfigManager.GetMasterConfig();
     const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig(1);
-    ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
+    MZ_ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
 
     NS_MZ_NET::Host hostWM;
     hostWM.FromAddress(masterConfig.m_privateAddress);
@@ -78,7 +78,7 @@ void ServerApp::Tick() {
 
     for (auto i = 0; i < size; ++i) {
         auto socket = m_socketArray[i];
-        ASSERT_TRUE(!NS_MZ::IsNull(socket));
+        MZ_ASSERT_TRUE(!NS_MZ::IsNull(socket));
         socket->Dispatch();
     }
 

@@ -18,6 +18,7 @@ void ServerApp::Initialize() {
     Network::Startup();
 
     m_serverConfigManager.Initialize();
+    m_serverGroupManager.Initialize();
 
     m_networkService.Initialize(1024, 8);
 
@@ -50,6 +51,7 @@ void ServerApp::Finalize() {
 
     m_networkService.Finalize();
 
+    m_serverGroupManager.Finalize();
     m_serverConfigManager.Finalize();
 
     Network::Cleanup();
@@ -64,7 +66,7 @@ void ServerApp::Tick() {
 
     for (auto i = 0; i < size; ++i) {
         auto socket = m_socketArray[i];
-        ASSERT_TRUE(!NS_MZ::IsNull(socket));
+        MZ_ASSERT_TRUE(!NS_MZ::IsNull(socket));
         socket->Dispatch();
     }
 

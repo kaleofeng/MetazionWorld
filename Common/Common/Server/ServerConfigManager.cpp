@@ -2,6 +2,9 @@
 
 #include <Metazion/Net/Host.hpp>
 
+#include "Common/Xml/rapidxml.hpp"
+#include "Common/Xml/rapidxml_utils.hpp"
+
 ServerConfigManager::ServerConfigManager() {}
 
 ServerConfigManager::~ServerConfigManager() {}
@@ -89,69 +92,193 @@ void ServerConfigManager::RemoveAllZoneConfig() {
 }
 
 void ServerConfigManager::LoadLoginConfig() {
-    NS_MZ_NET::Host publicHost;
-    publicHost.SetFamily(AF_INET);
-    publicHost.SetIp("192.168.1.101");
-    publicHost.SetPort(21001);
-
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
-    privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(2100);
 
-    m_loginConfig.m_publicAddress = publicHost.ToAddress();
-    m_loginConfig.m_privateAddress = privateHost.ToAddress();
+    NS_MZ_NET::Host publicHost;
+    publicHost.SetFamily(AF_INET);
+
+    rapidxml::file<> file("Resources/Config/LoginList.xml");
+    auto data = file.data();
+
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(data);
+    auto docName = doc.name();
+
+    rapidxml::xml_node<>* root = doc.first_node();
+    auto rootName = root->name();
+
+    auto node = root->first_node("Login");
+    if (!NS_MZ::IsNull(node)) {
+        auto idAttr = node->first_attribute("id");
+        auto privateIpAttr = node->first_attribute("privateIp");
+        auto privatePortAttr = node->first_attribute("privatePort");
+        auto publicIpAttr = node->first_attribute("publicIp");
+        auto publicPortAttr = node->first_attribute("publicPort");
+
+        const auto szId = idAttr->value();
+        const auto szPrivateIp = privateIpAttr->value();
+        const auto szPrivatePort = privatePortAttr->value();
+        const auto szPublicIp = publicIpAttr->value();
+        const auto szPublicPort = publicPortAttr->value();
+
+        const auto id = atoi(szId);
+        const auto privatePort = atoi(szPrivatePort);
+        const auto publicPort = atoi(szPublicPort);
+
+        privateHost.SetIp(szPrivateIp);
+        privateHost.SetPort(privatePort);
+
+        publicHost.SetIp(szPublicIp);
+        publicHost.SetPort(publicPort);
+
+        m_loginConfig.m_id = id;
+        m_loginConfig.m_privateAddress = privateHost.ToAddress();
+        m_loginConfig.m_publicAddress = publicHost.ToAddress();
+    }
 }
 
 void ServerConfigManager::LoadMasterConfig() {
-    NS_MZ_NET::Host publicHost;
-    publicHost.SetFamily(AF_INET);
-    publicHost.SetIp("192.168.1.101");
-    publicHost.SetPort(23001);
-    
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
-    privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(2300);
 
-    m_masterConfig.m_publicAddress = publicHost.ToAddress();
-    m_masterConfig.m_privateAddress = privateHost.ToAddress();
+    NS_MZ_NET::Host publicHost;
+    publicHost.SetFamily(AF_INET);
+
+    rapidxml::file<> file("Resources/Config/MasterList.xml");
+    auto data = file.data();
+
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(data);
+    auto docName = doc.name();
+
+    rapidxml::xml_node<>* root = doc.first_node();
+    auto rootName = root->name();
+
+    auto node = root->first_node("Master");
+    if (!NS_MZ::IsNull(node)) {
+        auto idAttr = node->first_attribute("id");
+        auto privateIpAttr = node->first_attribute("privateIp");
+        auto privatePortAttr = node->first_attribute("privatePort");
+        auto publicIpAttr = node->first_attribute("publicIp");
+        auto publicPortAttr = node->first_attribute("publicPort");
+
+        const auto szId = idAttr->value();
+        const auto szPrivateIp = privateIpAttr->value();
+        const auto szPrivatePort = privatePortAttr->value();
+        const auto szPublicIp = publicIpAttr->value();
+        const auto szPublicPort = publicPortAttr->value();
+
+        const auto id = atoi(szId);
+        const auto privatePort = atoi(szPrivatePort);
+        const auto publicPort = atoi(szPublicPort);
+
+        privateHost.SetIp(szPrivateIp);
+        privateHost.SetPort(privatePort);
+
+        publicHost.SetIp(szPublicIp);
+        publicHost.SetPort(publicPort);
+
+        m_masterConfig.m_id = id;
+        m_masterConfig.m_privateAddress = privateHost.ToAddress();
+        m_masterConfig.m_publicAddress = publicHost.ToAddress();
+    }
 }
 
 void ServerConfigManager::LoadGatewayConfig() {
-    NS_MZ_NET::Host publicHost;
-    publicHost.SetFamily(AF_INET);
-    publicHost.SetIp("192.168.1.101");
-    publicHost.SetPort(22001);
-
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
-    privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(2200);
 
-    GatewayConfig gatewayConfig;
-    gatewayConfig.m_id = 1;
-    gatewayConfig.m_publicAddress = publicHost.ToAddress();
-    gatewayConfig.m_privateAddress = privateHost.ToAddress();
+    NS_MZ_NET::Host publicHost;
+    publicHost.SetFamily(AF_INET);
 
-    AddGatewayConfig(gatewayConfig);
+    rapidxml::file<> file("Resources/Config/GatewayList.xml");
+    auto data = file.data();
+
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(data);
+    auto docName = doc.name();
+
+    rapidxml::xml_node<>* root = doc.first_node();
+    auto rootName = root->name();
+
+    for (auto node = root->first_node("Gateway")
+        ; !NS_MZ::IsNull(node); node = node->next_sibling()) {
+        auto idAttr = node->first_attribute("id");
+        auto privateIpAttr = node->first_attribute("privateIp");
+        auto privatePortAttr = node->first_attribute("privatePort");
+        auto publicIpAttr = node->first_attribute("publicIp");
+        auto publicPortAttr = node->first_attribute("publicPort");
+
+        const auto szId = idAttr->value();
+        const auto szPrivateIp = privateIpAttr->value();
+        const auto szPrivatePort = privatePortAttr->value();
+        const auto szPublicIp = publicIpAttr->value();
+        const auto szPublicPort = publicPortAttr->value();
+
+        const auto id = atoi(szId);
+        const auto privatePort = atoi(szPrivatePort);
+        const auto publicPort = atoi(szPublicPort);
+
+        privateHost.SetIp(szPrivateIp);
+        privateHost.SetPort(privatePort);
+
+        publicHost.SetIp(szPublicIp);
+        publicHost.SetPort(publicPort);
+
+        GatewayConfig config;
+        config.m_id = id;
+        config.m_privateAddress = privateHost.ToAddress();
+        config.m_publicAddress = publicHost.ToAddress();
+        AddGatewayConfig(config);
+    }
 }
 
 void ServerConfigManager::LoadZoneConfig() {
-    NS_MZ_NET::Host publicHost;
-    publicHost.SetFamily(AF_INET);
-    publicHost.SetIp("192.168.1.101");
-    publicHost.SetPort(24001);
-
     NS_MZ_NET::Host privateHost;
     privateHost.SetFamily(AF_INET);
-    privateHost.SetIp("192.168.1.101");
-    privateHost.SetPort(2400);
 
-    ZoneConfig zoneConfig;
-    zoneConfig.m_id = 1;
-    zoneConfig.m_publicAddress = publicHost.ToAddress();
-    zoneConfig.m_privateAddress = privateHost.ToAddress();
+    NS_MZ_NET::Host publicHost;
+    publicHost.SetFamily(AF_INET);
 
-    AddZoneConfig(zoneConfig);
+    rapidxml::file<> file("Resources/Config/ZoneList.xml");
+    auto data = file.data();
+
+    rapidxml::xml_document<> doc;
+    doc.parse<0>(data);
+    auto docName = doc.name();
+
+    rapidxml::xml_node<>* root = doc.first_node();
+    auto rootName = root->name();
+
+    for (auto node = root->first_node("Zone")
+        ; !NS_MZ::IsNull(node); node = node->next_sibling()) {
+        auto idAttr = node->first_attribute("id");
+        auto privateIpAttr = node->first_attribute("privateIp");
+        auto privatePortAttr = node->first_attribute("privatePort");
+        auto publicIpAttr = node->first_attribute("publicIp");
+        auto publicPortAttr = node->first_attribute("publicPort");
+
+        const auto szId = idAttr->value();
+        const auto szPrivateIp = privateIpAttr->value();
+        const auto szPrivatePort = privatePortAttr->value();
+        const auto szPublicIp = publicIpAttr->value();
+        const auto szPublicPort = publicPortAttr->value();
+
+        const auto id = atoi(szId);
+        const auto privatePort = atoi(szPrivatePort);
+        const auto publicPort = atoi(szPublicPort);
+
+        privateHost.SetIp(szPrivateIp);
+        privateHost.SetPort(privatePort);
+
+        publicHost.SetIp(szPublicIp);
+        publicHost.SetPort(publicPort);
+
+        ZoneConfig config;
+        config.m_id = id;
+        config.m_privateAddress = privateHost.ToAddress();
+        config.m_publicAddress = publicHost.ToAddress();
+        AddZoneConfig(config);
+    }
 }

@@ -25,7 +25,7 @@ void ServerApp::Initialize() {
     m_socketArray.Attach(m_sockets, 1024, 0);
 
     const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig(1);
-    ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
+    MZ_ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
 
     Host hostCG;
     hostCG.FromAddress(gatewayConfig->m_publicAddress);
@@ -65,7 +65,7 @@ void ServerApp::Tick() {
 
     for (auto i = 0; i < size; ++i) {
         auto socket = m_socketArray[i];
-        ASSERT_TRUE(!NS_MZ::IsNull(socket));
+        MZ_ASSERT_TRUE(!NS_MZ::IsNull(socket));
         socket->Dispatch();
     }
 

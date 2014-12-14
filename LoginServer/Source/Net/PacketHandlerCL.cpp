@@ -39,20 +39,33 @@ void PacketHandlerCL::HandlePlayerLogin(ServerSocketCL* socket
     const auto req = static_cast<const PlayerLoginCL*>(data);
     ::printf("Login: username[%s] password[%s]\n", req->m_username, req->m_password);
 
+    const auto success = _stricmp(req->m_username, "meta") == 0;
+    if (!success) {
+        PlayerLoginLC rsp;
+        rsp.m_success = false;
+        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        return;
+    }
+
     PlayerLoginLC rsp;
     rsp.m_success = true;
     socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
 
     NS_MZ_SHARE::MemoryOutputStream<> outputStream;
-    const auto gatewaySize = g_serverApp->m_serverConfigManager.GetGatewayConfigSize();
-    outputStream.WriteInt8(gatewaySize);
-    const auto& gatewayMap = g_serverApp->m_serverConfigManager.GetAllGatewayConfig();
-    for (auto gateway : gatewayMap) {
-        const auto id = gateway.second.m_id;
-        const auto publicAddress = gateway.second.m_publicAddress;
+    const auto serverGroupSize = g_serverApp->m_serverGroupManager.GetServerGroupSize();
+    outputStream.WriteInt8(serverGroupSize);
+    const auto& serverGroupMap = g_serverApp->m_serverGroupManager.GetAllServerGroup();
+    for (auto pair : serverGroupMap) {
+        const auto& serverGroup = pair.second;
+        const auto id = serverGroup.GetId();
+        const auto name = serverGroup.GetName();
+        const auto publicAddress = serverGroup.GetPublicAddress();
+        const auto status = serverGroup.GetStatus();
         outputStream.WriteInt8(id);
+        outputStream.WriteString(name, NS_MZ_SHARE::mzstrlen(name));
         outputStream.WriteUint32(publicAddress.m_ip);
         outputStream.WriteUint16(publicAddress.m_port);
+        outputStream.WriteInt8(status);
     }
     socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
 }

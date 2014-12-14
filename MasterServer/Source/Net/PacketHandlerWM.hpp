@@ -4,8 +4,6 @@
 #include "Net/Sockets.hpp"
 
 class PacketHandlerWM {
-    DISALLOW_COPY_AND_ASSIGN(PacketHandlerWM)
-
 public:
     PacketHandlerWM() {}
 

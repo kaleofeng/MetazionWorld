@@ -4,8 +4,6 @@
 #include "Net/Sockets.hpp"
 
 class PacketHandlerGM {
-    DISALLOW_COPY_AND_ASSIGN(PacketHandlerGM)
-
 public:
     PacketHandlerGM() {}
 

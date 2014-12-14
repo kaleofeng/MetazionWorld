@@ -5,6 +5,7 @@
 
 #include "Common/Server/ServerConfigManager.hpp"
 
+#include "ServerGroupManager.hpp"
 #include "Net/PacketHandlerCL.hpp"
 #include "Net/PacketHandlerWL.hpp"
 
@@ -23,6 +24,7 @@ public:
 
 public:
     ServerConfigManager m_serverConfigManager;
+    ServerGroupManager m_serverGroupManager;
 
     PacketHandlerCL m_packetHandlerCL;
     PacketHandlerWL m_packetHandlerWL;
