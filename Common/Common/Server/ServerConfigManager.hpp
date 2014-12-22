@@ -39,11 +39,8 @@ public:
 
 private:
     void LoadLoginConfig();
-
     void LoadMasterConfig();
-
     void LoadGatewayConfig();
-
     void LoadZoneConfig();
 
 private:

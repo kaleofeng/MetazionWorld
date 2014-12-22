@@ -2,10 +2,6 @@ cd Common
 CMakeWindows.sh
 cd ..
 
-cd Client
-CMakeWindows.sh
-cd ..
-
 cd LoginServer
 CMakeWindows.sh
 cd ..

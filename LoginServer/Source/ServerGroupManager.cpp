@@ -50,7 +50,7 @@ void ServerGroupManager::LoadAllServerGroup() {
     NS_MZ_NET::Host host;
     host.SetFamily(AF_INET);
 
-    rapidxml::file<> file("Resources/Config/ServerGroupList.xml");
+    rapidxml::file<> file("../Resources/Config/ServerGroupList.xml");
     auto data = file.data();
 
     rapidxml::xml_document<> doc;

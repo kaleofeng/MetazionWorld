@@ -98,7 +98,7 @@ void ServerConfigManager::LoadLoginConfig() {
     NS_MZ_NET::Host publicHost;
     publicHost.SetFamily(AF_INET);
 
-    rapidxml::file<> file("Resources/Config/LoginList.xml");
+    rapidxml::file<> file("../Resources/Config/LoginList.xml");
     auto data = file.data();
 
     rapidxml::xml_document<> doc;
@@ -145,7 +145,7 @@ void ServerConfigManager::LoadMasterConfig() {
     NS_MZ_NET::Host publicHost;
     publicHost.SetFamily(AF_INET);
 
-    rapidxml::file<> file("Resources/Config/MasterList.xml");
+    rapidxml::file<> file("../Resources/Config/MasterList.xml");
     auto data = file.data();
 
     rapidxml::xml_document<> doc;
@@ -192,7 +192,7 @@ void ServerConfigManager::LoadGatewayConfig() {
     NS_MZ_NET::Host publicHost;
     publicHost.SetFamily(AF_INET);
 
-    rapidxml::file<> file("Resources/Config/GatewayList.xml");
+    rapidxml::file<> file("../Resources/Config/GatewayList.xml");
     auto data = file.data();
 
     rapidxml::xml_document<> doc;
@@ -241,7 +241,7 @@ void ServerConfigManager::LoadZoneConfig() {
     NS_MZ_NET::Host publicHost;
     publicHost.SetFamily(AF_INET);
 
-    rapidxml::file<> file("Resources/Config/ZoneList.xml");
+    rapidxml::file<> file("../Resources/Config/ZoneList.xml");
     auto data = file.data();
 
     rapidxml::xml_document<> doc;
