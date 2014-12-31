@@ -1,5 +1,7 @@
 #include "ServerGroup.hpp"
 
+#include <Metazion/Share/Utility/Random.hpp>
+
 ServerGroup::ServerGroup()
     : m_id(0)
     , m_status(0) {
@@ -7,3 +9,34 @@ ServerGroup::ServerGroup()
 }
 
 ServerGroup::~ServerGroup() {}
+
+int ServerGroup::GetAddressSize() const {
+    return m_addressArray.GetSize();
+}
+
+const NS_MZ_NET::Address* ServerGroup::GetAddress(int index) const {
+    if (index >= 0 && index < m_addressArray.GetSize()) {
+        return &m_addressArray[index];
+    }
+
+    return nullptr;
+}
+
+void ServerGroup::AppendAddress(const NS_MZ_NET::Address& value) {
+    m_addressArray.Append(value);
+}
+
+void ServerGroup::RemoveAllAddress() {
+    m_addressArray.Clear();
+}
+
+const NS_MZ_NET::Address* ServerGroup::GetARandomAddress() const {
+    const auto size = GetAddressSize();
+    if (size < 1) {
+        return nullptr;
+    }
+
+    static NS_MZ_SHARE::Random s_random;
+    const auto index = s_random.GetRangeInt(0, size - 1);
+    return GetAddress(index);
+}

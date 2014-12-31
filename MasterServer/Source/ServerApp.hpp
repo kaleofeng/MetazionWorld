@@ -23,6 +23,13 @@ public:
 
     void Tick();
 
+private:
+    void ListenFromWorld();
+
+    void ConnectToGateway();
+
+    void ConnectToLogin();
+
 public:
     ServerConfigManager m_serverConfigManager;
 

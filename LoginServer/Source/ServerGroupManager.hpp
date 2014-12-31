@@ -22,7 +22,7 @@ public:
     int GetServerGroupSize() const;
     ServerGroup* GetServerGroup(int id);
     const ServerGroupMap_t& GetAllServerGroup() const;
-    void AddServerGroup(const ServerGroup& gatewayConfig);
+    void AddServerGroup(const ServerGroup& serverGroup);
     void RemoveServerGroup(int id);
     void RemoveAllServerGroup();
 

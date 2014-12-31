@@ -64,25 +64,15 @@ void ServerGroupManager::LoadAllServerGroup() {
         ; !NS_MZ::IsNull(node); node = node->next_sibling()) {
         auto idAttr = node->first_attribute("id");
         auto nameAttr = node->first_attribute("name");
-        auto ipAttr = node->first_attribute("ip");
-        auto portAttr = node->first_attribute("port");
        
         const auto szId = idAttr->value();
         const auto szName = nameAttr->value();
-        const auto szIp = ipAttr->value();
-        const auto szPort = portAttr->value();
 
         const auto id = atoi(szId);
-        const auto port = atoi(szPort);
-        
-        host.SetIp(szIp);
-        host.SetPort(port);
 
         ServerGroup serverGroup;
         serverGroup.SetId(id);
         serverGroup.SetName(szName);
-        serverGroup.SetPublicAddress(host.ToAddress());
-        serverGroup.SetStatus(0);
         AddServerGroup(serverGroup);
     }
 }

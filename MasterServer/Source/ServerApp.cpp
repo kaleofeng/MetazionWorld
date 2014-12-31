@@ -24,39 +24,9 @@ void ServerApp::Initialize() {
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
     
-    const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
-    const auto& masterConfig = m_serverConfigManager.GetMasterConfig();
-    const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig(1);
-    MZ_ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
-
-    NS_MZ_NET::Host hostWM;
-    hostWM.FromAddress(masterConfig.m_privateAddress);
-
-    auto listenSocket = new ListenSocketWM();
-    listenSocket->Retain();
-    listenSocket->SetLocalHost(hostWM);
-    listenSocket->Listen(100);
-    m_networkService.Attach(listenSocket);
-
-    NS_MZ_NET::Host hostMG;
-    hostMG.FromAddress(gatewayConfig->m_privateAddress);
-
-    m_socketMG = new ClientSocketMG();
-    m_socketMG->Retain();
-    m_socketMG->SetRemoteHost(hostMG);
-    m_socketMG->SetReconnectInterval(10000);
-    m_socketMG->Connect();
-    m_networkService.Attach(m_socketMG);
-
-    NS_MZ_NET::Host hostML;
-    hostML.FromAddress(loginConfig.m_privateAddress);
-
-    m_socketML = new ClientSocketML();
-    m_socketML->Retain();
-    m_socketML->SetRemoteHost(hostML);
-    m_socketML->SetReconnectInterval(10000);
-    m_socketML->Connect();
-    m_networkService.Attach(m_socketML);
+    ListenFromWorld();
+    ConnectToGateway();
+    ConnectToLogin();
 }
 
 void ServerApp::Finalize() {
@@ -83,4 +53,45 @@ void ServerApp::Tick() {
     }
 
     m_networkService.UnlockSockets(m_socketArray);
+}
+
+void ServerApp::ListenFromWorld() {
+    const auto& masterConfig = m_serverConfigManager.GetMasterConfig();
+
+    NS_MZ_NET::Host hostWM;
+    hostWM.FromAddress(masterConfig.m_privateAddress);
+
+    auto listenSocket = new ListenSocketWM();
+    listenSocket->Retain();
+    listenSocket->SetLocalHost(hostWM);
+    listenSocket->Listen(100);
+    m_networkService.Attach(listenSocket);
+}
+
+void ServerApp::ConnectToGateway() {
+    const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig();
+
+    NS_MZ_NET::Host hostMG;
+    hostMG.FromAddress(gatewayConfig.m_privateAddress);
+
+    m_socketMG = new ClientSocketMG();
+    m_socketMG->Retain();
+    m_socketMG->SetRemoteHost(hostMG);
+    m_socketMG->SetReconnectInterval(10000);
+    m_socketMG->Connect();
+    m_networkService.Attach(m_socketMG);
+}
+
+void ServerApp::ConnectToLogin() {
+    const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
+
+    NS_MZ_NET::Host hostML;
+    hostML.FromAddress(loginConfig.m_privateAddress);
+
+    m_socketML = new ClientSocketML();
+    m_socketML->Retain();
+    m_socketML->SetRemoteHost(hostML);
+    m_socketML->SetReconnectInterval(10000);
+    m_socketML->Connect();
+    m_networkService.Attach(m_socketML);
 }

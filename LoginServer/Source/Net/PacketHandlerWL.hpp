@@ -19,6 +19,9 @@ private:
 
     void HandleMLDisconnected(ServerSocketWL* socket
         , const void* data, int length);
+
+    void HandleMLServerLogin(ServerSocketWL* socket
+        , const void* data, int length);
 };
 
 #endif // _LOGINSERVER_PACKETHANDLERWL_HPP_

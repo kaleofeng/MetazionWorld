@@ -59,13 +59,17 @@ void PacketHandlerCL::HandlePlayerLogin(ServerSocketCL* socket
         const auto& serverGroup = pair.second;
         const auto id = serverGroup.GetId();
         const auto name = serverGroup.GetName();
-        const auto publicAddress = serverGroup.GetPublicAddress();
         const auto status = serverGroup.GetStatus();
+        const auto address = serverGroup.GetARandomAddress();
+
+        const auto ip = NS_MZ::IsNull(address) ? 0 : address->m_ip;
+        const auto port = NS_MZ::IsNull(address) ? 0 : address->m_port;
+
         outputStream.WriteInt8(id);
         outputStream.WriteString(name, NS_MZ_SHARE::mzstrlen(name));
-        outputStream.WriteUint32(publicAddress.m_ip);
-        outputStream.WriteUint16(publicAddress.m_port);
         outputStream.WriteInt8(status);
+        outputStream.WriteUint32(ip);
+        outputStream.WriteUint16(port);
     }
     socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
 }

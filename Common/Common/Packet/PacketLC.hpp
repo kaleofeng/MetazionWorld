@@ -21,10 +21,6 @@ struct PlayerLoginLC {
     bool m_success = false;
 };
 
-struct ServerListLC {
-    enum { COMMAND = COMMAND_LC_SERVERLIST };
-};
-
 #pragma pack(pop)
 
 #endif // _COMMON_PACKETLC_HPP_

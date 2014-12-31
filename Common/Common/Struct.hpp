@@ -5,28 +5,16 @@
 
 #include "Common/Define.hpp"
 
-struct LoginConfig {
+struct ServerConfig {
     int m_id = 0;
     NS_MZ_NET::Address m_privateAddress;
     NS_MZ_NET::Address m_publicAddress;
 };
 
-struct MasterConfig {
+struct ServerInfo {
     int m_id = 0;
-    NS_MZ_NET::Address m_privateAddress;
-    NS_MZ_NET::Address m_publicAddress;
-};
-
-struct GatewayConfig {
-    int m_id = 0;
-    NS_MZ_NET::Address m_privateAddress;
-    NS_MZ_NET::Address m_publicAddress;
-};
-
-struct ZoneConfig {
-    int m_id = 0;
-    NS_MZ_NET::Address m_privateAddress;
-    NS_MZ_NET::Address m_publicAddress;
+    int m_status = 0;
+    NS_MZ_NET::Address m_address;
 };
 
 #endif // _COMMON_STRUCT_HPP_

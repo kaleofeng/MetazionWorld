@@ -6,8 +6,7 @@
 #include "Common/Struct.hpp"
 
 class ServerConfigManager {
-    using GatewayConfigMap_t = NS_MZ_SHARE::Map<int, GatewayConfig>;
-    using ZoneConfigMap_t = NS_MZ_SHARE::Map<int, ZoneConfig>;
+    using GatewayInfoMap_t = NS_MZ_SHARE::Map<int, ServerInfo>;
 
 public:
     ServerConfigManager();
@@ -19,35 +18,34 @@ public:
 
     void Finalize();
 
-    LoginConfig& GetLoginConfig();
+    ServerConfig& GetLoginConfig();
 
-    MasterConfig& GetMasterConfig();
+    ServerConfig& GetMasterConfig();
 
-    int GetGatewayConfigSize() const;
-    GatewayConfig* GetGatewayConfig(int id);
-    const GatewayConfigMap_t& GetAllGatewayConfig() const;
-    void AddGatewayConfig(const GatewayConfig& gatewayConfig);
-    void RemoveGatewayConfig(int id);
-    void RemoveAllGatewayConfig();
+    ServerConfig& GetGatewayConfig();
 
-    int GetZoneConfigSize() const;
-    ZoneConfig* GetZoneConfig(int id);
-    const ZoneConfigMap_t& GetAllZoneConfig() const;
-    void AddZoneConfig(const ZoneConfig& gatewayConfig);
-    void RemoveZoneConfig(int id);
-    void RemoveAllZoneConfig();
+    ServerConfig& GetZoneConfig();
+
+    int GetGatewayInfoSize() const;
+    ServerInfo* GetGatewayInfo(int id);
+    const GatewayInfoMap_t& GetAllGatewayInfo() const;
+    void AddGatewayInfo(const ServerInfo& gatewayInfo);
+    void RemoveGatewayInfo(int id);
+    void RemoveAllGatewayInfo();
 
 private:
     void LoadLoginConfig();
     void LoadMasterConfig();
     void LoadGatewayConfig();
     void LoadZoneConfig();
+    void LoadGatewayList();
 
 private:
-    LoginConfig m_loginConfig;
-    MasterConfig m_masterConfig;
-    GatewayConfigMap_t m_gatewayConfigMap;
-    ZoneConfigMap_t m_zoneConfigMap;
+    ServerConfig m_loginConfig;
+    ServerConfig m_masterConfig;
+    ServerConfig m_gatewayConfig;
+    ServerConfig m_zoneConfig;
+    GatewayInfoMap_t m_gatewayInfoMap;
 };
 
 #endif // _MASTERSERVER_SERVERCONFIGMANAGER_HPP_

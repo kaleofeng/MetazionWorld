@@ -24,11 +24,10 @@ void ServerApp::Initialize() {
     ::memset(m_sockets, 0, sizeof(m_sockets));
     m_socketArray.Attach(m_sockets, 1024, 0);
 
-    const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig(1);
-    MZ_ASSERT_TRUE(!NS_MZ::IsNull(gatewayConfig));
+    const auto& gatewayConfig = m_serverConfigManager.GetGatewayConfig();
 
     Host hostCG;
-    hostCG.FromAddress(gatewayConfig->m_publicAddress);
+    hostCG.FromAddress(gatewayConfig.m_publicAddress);
 
     ListenSocketCG* listenSocketCG = new ListenSocketCG();
     listenSocketCG->Retain();
@@ -37,7 +36,7 @@ void ServerApp::Initialize() {
     m_networkService.Attach(listenSocketCG);
 
     Host hostWG;
-    hostWG.FromAddress(gatewayConfig->m_privateAddress);
+    hostWG.FromAddress(gatewayConfig.m_privateAddress);
 
     ListenSocketWG* listenSocketWG = new ListenSocketWG();
     listenSocketWG->Retain();
