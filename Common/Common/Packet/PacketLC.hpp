@@ -10,6 +10,7 @@ enum CommandLC {
     COMMAND_LC_CONNECTFAILED,
     COMMAND_LC_PLAYERLOGIN,
     COMMAND_LC_SERVERLIST,
+    COMMAND_LC_SELECTSERVER,
     COMMAND_LC_END,
 };
 
@@ -19,6 +20,14 @@ struct PlayerLoginLC {
     enum { COMMAND = COMMAND_LC_PLAYERLOGIN };
 
     bool m_success = false;
+};
+
+struct SelectServerLC {
+    enum { COMMAND = COMMAND_LC_SELECTSERVER };
+
+    int32_t m_authCode = 0;
+    int8_t m_serverId = 0;
+    NS_MZ_NET::Address m_address;
 };
 
 #pragma pack(pop)

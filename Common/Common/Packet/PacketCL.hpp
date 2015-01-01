@@ -8,6 +8,7 @@ enum CommandCL {
     COMMAND_CL_CONNECTED = COMMAND_CL_BEGIN,
     COMMAND_CL_DISCONNECTED,
     COMMAND_CL_PLAYERLOGIN,
+    COMMAND_CL_SELECTSERVER,
     COMMAND_CL_END,
 };
 
@@ -23,6 +24,12 @@ struct PlayerLoginCL {
 
     char m_username[32];
     char m_password[32];
+};
+
+struct SelectServerCL {
+    enum { COMMAND = COMMAND_CL_SELECTSERVER };
+
+    int8_t m_serverId = 0;
 };
 
 #pragma pack(pop)

@@ -14,6 +14,17 @@ int ServerGroup::GetAddressSize() const {
     return m_addressArray.GetSize();
 }
 
+const NS_MZ_NET::Address* ServerGroup::SelectRandomAddress() const {
+    const auto size = GetAddressSize();
+    if (size < 1) {
+        return nullptr;
+    }
+
+    static NS_MZ_SHARE::Random s_random;
+    const auto index = s_random.GetRangeInt(0, size - 1);
+    return GetAddress(index);
+}
+
 const NS_MZ_NET::Address* ServerGroup::GetAddress(int index) const {
     if (index >= 0 && index < m_addressArray.GetSize()) {
         return &m_addressArray[index];
@@ -28,15 +39,4 @@ void ServerGroup::AppendAddress(const NS_MZ_NET::Address& value) {
 
 void ServerGroup::RemoveAllAddress() {
     m_addressArray.Clear();
-}
-
-const NS_MZ_NET::Address* ServerGroup::GetARandomAddress() const {
-    const auto size = GetAddressSize();
-    if (size < 1) {
-        return nullptr;
-    }
-
-    static NS_MZ_SHARE::Random s_random;
-    const auto index = s_random.GetRangeInt(0, size - 1);
-    return GetAddress(index);
 }

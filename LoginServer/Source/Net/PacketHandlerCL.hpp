@@ -22,6 +22,9 @@ private:
 
     void HandlePlayerLogin(ServerSocketCL* socket
         , const void* data, int length);
+
+    void HandleSelectServer(ServerSocketCL* socket
+        , const void* data, int length);
 };
 
 #endif // _LOGINSERVER_PACKETHANDLERCL_HPP_

@@ -20,7 +20,7 @@ private:
     void HandleMLDisconnected(ServerSocketWL* socket
         , const void* data, int length);
 
-    void HandleMLServerLogin(ServerSocketWL* socket
+    void HandleMLServerRegister(ServerSocketWL* socket
         , const void* data, int length);
 };
 

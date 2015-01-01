@@ -18,8 +18,8 @@ void PacketHandlerWL::Handle(ServerSocketWL* socket
     case COMMAND_ML_DISCONNECTED:
         HandleMLDisconnected(socket, data, length);
         break;
-    case COMMAND_ML_SERVERLOGIN:
-        HandleMLServerLogin(socket, data, length);
+    case COMMAND_ML_SERVERREGISTER:
+        HandleMLServerRegister(socket, data, length);
         break;
     default: break;
     }
@@ -35,7 +35,7 @@ void PacketHandlerWL::HandleMLDisconnected(ServerSocketWL* socket
 
 }
 
-void PacketHandlerWL::HandleMLServerLogin(ServerSocketWL* socket
+void PacketHandlerWL::HandleMLServerRegister(ServerSocketWL* socket
     , const void* data, int length) {
     NS_MZ_SHARE::MemoryInputStream inputStream;
     inputStream.Attach(data, length);

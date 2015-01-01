@@ -15,6 +15,8 @@ public:
     ~ServerGroup();
 
 public:
+    const NS_MZ_NET::Address* SelectRandomAddress() const;
+
     int GetId() const {
         return m_id;
     }
@@ -43,8 +45,6 @@ public:
     const NS_MZ_NET::Address* GetAddress(int index) const;
     void AppendAddress(const NS_MZ_NET::Address& value);
     void RemoveAllAddress();
-
-    const NS_MZ_NET::Address* GetARandomAddress() const;
 
 private:
     int m_id;
