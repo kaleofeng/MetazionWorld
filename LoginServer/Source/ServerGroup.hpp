@@ -6,6 +6,8 @@
 #include <Metazion/Net/Address.hpp>
 #include <Metazion/Net/Host.hpp>
 
+class ServerSocketWL;
+
 class ServerGroup {
     using AddressArray_t = NS_MZ_SHARE::DynamicArray<NS_MZ_NET::Address, 4, 4>;
 
@@ -46,11 +48,15 @@ public:
     void AppendAddress(const NS_MZ_NET::Address& value);
     void RemoveAllAddress();
 
+    void BindSocket(ServerSocketWL* socket);
+
 private:
     int m_id;
     char m_name[64];
     int m_status;
     AddressArray_t m_addressArray;
+
+    ServerSocketWL* m_socket;
 };
 
 

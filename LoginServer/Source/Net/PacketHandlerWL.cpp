@@ -5,6 +5,7 @@
 #include "Common/Packet/PacketML.hpp"
 #include "Common/Packet/PacketLM.hpp"
 
+#include "Net/Sockets.hpp"
 #include "ServerApp.hpp"
 
 void PacketHandlerWL::Handle(ServerSocketWL* socket
@@ -32,6 +33,8 @@ void PacketHandlerWL::HandleMLConnected(ServerSocketWL* socket
 
 void PacketHandlerWL::HandleMLDisconnected(ServerSocketWL* socket
     , const void* data, int length) {
+    auto serverGroup = socket->GetObject();
+    MZ_ASSERT_TRUE(!NS_MZ::IsNull(serverGroup));
 
 }
 
@@ -68,4 +71,7 @@ void PacketHandlerWL::HandleMLServerRegister(ServerSocketWL* socket
 
         serverGroup->AppendAddress(address);
     }
+
+    serverGroup->BindSocket(socket);
+    socket->BindObject(serverGroup);
 }

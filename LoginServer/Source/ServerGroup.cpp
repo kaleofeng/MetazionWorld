@@ -4,7 +4,8 @@
 
 ServerGroup::ServerGroup()
     : m_id(0)
-    , m_status(0) {
+    , m_status(0)
+    , m_socket(nullptr) {
     ::memset(m_name, 0, sizeof(m_name));
 }
 
@@ -39,4 +40,8 @@ void ServerGroup::AppendAddress(const NS_MZ_NET::Address& value) {
 
 void ServerGroup::RemoveAllAddress() {
     m_addressArray.Clear();
+}
+
+void ServerGroup::BindSocket(ServerSocketWL* socket) {
+    m_socket = socket;
 }

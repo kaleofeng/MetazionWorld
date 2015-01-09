@@ -46,12 +46,20 @@ private:
 };
 
 
+class ServerGroup;
+
 class ServerSocketWL
     : public NS_MZ_NET::AppServerSocket {
 public:
-    ServerSocketWL() {}
+    ServerSocketWL()
+        : m_serverGroup(nullptr) {}
 
     ~ServerSocketWL() {}
+
+public:
+    ServerGroup* GetObject();
+
+    void BindObject(ServerGroup* object);
 
 protected:
     void OnConnected() override final;
@@ -61,6 +69,9 @@ protected:
     void OnValidPacket(int command, const void* data, int length) override final;
 
     void OnInvalidPacket() override final;
+
+private:
+    ServerGroup* m_serverGroup;
 };
 
 

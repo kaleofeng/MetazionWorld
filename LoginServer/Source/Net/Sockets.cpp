@@ -35,6 +35,14 @@ ServerSocketCL* ListenSocketCL::CreateServerSocket() {
 }
 
 
+ServerGroup* ServerSocketWL::GetObject() {
+    return m_serverGroup;
+}
+
+void ServerSocketWL::BindObject(ServerGroup* object) {
+    m_serverGroup = object;
+}
+
 void ServerSocketWL::OnConnected() {
     ::printf("ServerSocket from World Connected\n");
 }
