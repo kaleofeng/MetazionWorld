@@ -27,8 +27,6 @@ void PacketHandlerLM::HandleConnected(const void* data, int length) {
     auto& masterConfig = g_serverApp->m_serverConfigManager.GetMasterConfig();
     outputStream.WriteInt8(masterConfig.m_id);
 
-    outputStream.WriteInt8(1);
-
     const auto gatewayInfoSize = g_serverApp->m_serverConfigManager.GetGatewayInfoSize();
     outputStream.WriteInt8(gatewayInfoSize);
 

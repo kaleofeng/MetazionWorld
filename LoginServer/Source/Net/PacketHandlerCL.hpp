@@ -20,7 +20,7 @@ private:
     void HandleDisconnected(ServerSocketCL* socket
         , const void* data, int length);
 
-    void HandlePlayerLogin(ServerSocketCL* socket
+    void HandleUserLogin(ServerSocketCL* socket
         , const void* data, int length);
 
     void HandleSelectServer(ServerSocketCL* socket

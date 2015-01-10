@@ -36,6 +36,7 @@ void PacketHandlerWL::HandleMLDisconnected(ServerSocketWL* socket
     auto serverGroup = socket->GetObject();
     MZ_ASSERT_TRUE(!NS_MZ::IsNull(serverGroup));
 
+    serverGroup->SetStatus(0);
 }
 
 void PacketHandlerWL::HandleMLServerRegister(ServerSocketWL* socket
@@ -50,11 +51,6 @@ void PacketHandlerWL::HandleMLServerRegister(ServerSocketWL* socket
     if (NS_MZ::IsNull(serverGroup)) {
         return;
     }
-
-    int8_t status = 0;
-    inputStream.ReadInt8(status);
-
-    serverGroup->SetStatus(status);
 
     int8_t addressSize = 0;
     inputStream.ReadInt8(addressSize);
@@ -74,4 +70,6 @@ void PacketHandlerWL::HandleMLServerRegister(ServerSocketWL* socket
 
     serverGroup->BindSocket(socket);
     socket->BindObject(serverGroup);
+
+    serverGroup->SetStatus(1);
 }

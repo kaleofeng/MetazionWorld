@@ -19,8 +19,8 @@ void PacketHandlerCL::Handle(ServerSocketCL* socket
     case COMMAND_CL_DISCONNECTED:
         HandleDisconnected(socket, data, length);
         break;
-    case COMMAND_CL_PLAYERLOGIN:
-        HandlePlayerLogin(socket, data, length);
+    case COMMAND_CL_USERLOGIN:
+        HandleUserLogin(socket, data, length);
         break;
     case COMMAND_CL_SELECTSERVER:
         HandleSelectServer(socket, data, length);
@@ -38,20 +38,21 @@ void PacketHandlerCL::HandleDisconnected(ServerSocketCL* socket
     
 }
 
-void PacketHandlerCL::HandlePlayerLogin(ServerSocketCL* socket
+void PacketHandlerCL::HandleUserLogin(ServerSocketCL* socket
     , const void* data, int length) {
-    const auto req = static_cast<const PlayerLoginCL*>(data);
+    const auto req = static_cast<const UserLoginCL*>(data);
     ::printf("PlayerLogin: username[%s] password[%s]\n", req->m_username, req->m_password);
 
     const auto success = _stricmp(req->m_username, "meta") == 0;
     if (!success) {
-        PlayerLoginLC rsp;
+        UserLoginLC rsp;
         rsp.m_success = false;
         socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
-    PlayerLoginLC rsp;
+    UserLoginLC rsp;
+    rsp.m_userId = 1000000000001;
     rsp.m_success = true;
     socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
 
@@ -102,7 +103,7 @@ void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
     }
 
     static NS_MZ_SHARE::Random s_random;
-    const auto authCode = s_random.GetRangeInt(1000, 100000);
+    const auto authCode = s_random.GetRangeInt(1000000, 1000000000);
 
     rsp.m_authCode = authCode;
     rsp.m_address = *address;

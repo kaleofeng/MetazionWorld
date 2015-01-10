@@ -7,17 +7,17 @@
 enum CommandCL {
     COMMAND_CL_CONNECTED = COMMAND_CL_BEGIN,
     COMMAND_CL_DISCONNECTED,
-    COMMAND_CL_PLAYERLOGIN,
+    COMMAND_CL_USERLOGIN,
     COMMAND_CL_SELECTSERVER,
     COMMAND_CL_END,
 };
 
 #pragma pack(push, 1)
 
-struct PlayerLoginCL {
-    enum { COMMAND = COMMAND_CL_PLAYERLOGIN, };
+struct UserLoginCL {
+    enum { COMMAND = COMMAND_CL_USERLOGIN, };
 
-    PlayerLoginCL() {
+    UserLoginCL() {
         ::memset(m_username, '\0', sizeof(m_username));
         ::memset(m_password, '\0', sizeof(m_password));
     }
