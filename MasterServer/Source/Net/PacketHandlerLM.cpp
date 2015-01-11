@@ -6,6 +6,7 @@
 #include "Common/Packet/PacketLM.hpp"
 
 #include "ServerApp.hpp"
+#include "UserManager.hpp"
 
 void PacketHandlerLM::Handle(int command, const void* data, int length) {
     ::printf("Command[%d] data[%p] length[%d]\n", command, data, length);
@@ -16,6 +17,9 @@ void PacketHandlerLM::Handle(int command, const void* data, int length) {
         break;
     case COMMAND_LM_DISCONNECTED:
         HandleDisconnected(data, length);
+        break;
+    case COMMAND_LM_USERCANDIDATE:
+        HandleUserCandidate(data, length);
         break;
     default: break;
     }
@@ -44,4 +48,14 @@ void PacketHandlerLM::HandleConnected(const void* data, int length) {
 
 void PacketHandlerLM::HandleDisconnected(const void* data, int length) {
     
+}
+
+void PacketHandlerLM::HandleUserCandidate(const void* data, int length) {
+    const auto req = static_cast<const UserCandidateLM*>(data);
+    ::printf("UserCandidate: userId[%lld] authCode[%lld]\n", req->m_userId, req->m_authCode);
+
+    User user;
+    user.SetUserId(req->m_userId);
+    user.SetAuthCode(req->m_authCode);
+    UserManager::Instance().AppendUser(user);
 }

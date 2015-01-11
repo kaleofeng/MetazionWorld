@@ -16,6 +16,8 @@ private:
     void HandleConnected(const void* data, int length);
 
     void HandleDisconnected(const void* data, int length);
+
+    void HandleUserCandidate(const void* data, int length);
 };
 
 #endif // _MASTERSERVER_PACKETHANDLERLM_HPP_

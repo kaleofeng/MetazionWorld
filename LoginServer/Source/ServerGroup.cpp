@@ -45,3 +45,7 @@ void ServerGroup::RemoveAllAddress() {
 void ServerGroup::BindSocket(ServerSocketWL* socket) {
     m_socket = socket;
 }
+
+ServerSocketWL* ServerGroup::GetSocket() {
+    return m_socket;
+}

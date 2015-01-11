@@ -49,6 +49,7 @@ public:
     void RemoveAllAddress();
 
     void BindSocket(ServerSocketWL* socket);
+    ServerSocketWL* GetSocket();
 
 private:
     int m_id;

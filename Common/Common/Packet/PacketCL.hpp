@@ -29,6 +29,7 @@ struct UserLoginCL {
 struct SelectServerCL {
     enum { COMMAND = COMMAND_CL_SELECTSERVER };
 
+    int64_t m_userId;
     int8_t m_serverId = 0;
 };
 

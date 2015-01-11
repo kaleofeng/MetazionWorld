@@ -12,7 +12,10 @@ enum CommandLM {
 };
 
 struct UserCandidateLM {
+    enum { COMMAND = COMMAND_LM_USERCANDIDATE };
 
+    int64_t m_userId = 0;
+    int64_t m_authCode = 0;
 };
 
 #endif // _COMMON_PACKETLM_HPP_

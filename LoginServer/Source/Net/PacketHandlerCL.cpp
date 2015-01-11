@@ -5,8 +5,10 @@
 
 #include "Common/Packet/PacketCL.hpp"
 #include "Common/Packet/PacketLC.hpp"
+#include "Common/Packet/PacketLM.hpp"
 
 #include "ServerApp.hpp"
+#include "UserManager.hpp"
 
 void PacketHandlerCL::Handle(ServerSocketCL* socket
     , int command, const void* data, int length) {
@@ -41,7 +43,7 @@ void PacketHandlerCL::HandleDisconnected(ServerSocketCL* socket
 void PacketHandlerCL::HandleUserLogin(ServerSocketCL* socket
     , const void* data, int length) {
     const auto req = static_cast<const UserLoginCL*>(data);
-    ::printf("PlayerLogin: username[%s] password[%s]\n", req->m_username, req->m_password);
+    ::printf("UserLogin: username[%s] password[%s]\n", req->m_username, req->m_password);
 
     const auto success = _stricmp(req->m_username, "meta") == 0;
     if (!success) {
@@ -71,33 +73,45 @@ void PacketHandlerCL::HandleUserLogin(ServerSocketCL* socket
         outputStream.WriteInt8(status);
     }
     socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
+
+    User user;
+    user.SetUserId(rsp.m_userId);
+    UserManager::Instance().AppendUser(user);
 }
 
 void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
     , const void* data, int length) {
     const auto req = static_cast<const SelectServerCL*>(data);
-    ::printf("SelectServer: serverId[%d]\n", req->m_serverId);
+    ::printf("SelectServer: userId[%lld] serverId[%d]\n", req->m_userId, req->m_serverId);
 
     SelectServerLC rsp;
+
+    const auto userId = req->m_userId;
+    User* user = UserManager::Instance().GetUser(userId);
+    if (NS_MZ::IsNull(user)) {
+        rsp.m_authCode = -1;
+        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        return;
+    }
 
     const auto serverId = req->m_serverId;
     const auto serverGroup = g_serverApp->m_serverGroupManager.GetServerGroup(serverId);
     if (NS_MZ::IsNull(serverGroup)) {
-        rsp.m_authCode = -1;
+        rsp.m_authCode = -2;
         socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
     const auto status = serverGroup->GetStatus();
     if (status == 0) {
-        rsp.m_authCode = -2;
+        rsp.m_authCode = -3;
         socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
     const auto address = serverGroup->SelectRandomAddress();
     if (NS_MZ::IsNull(address)) {
-        rsp.m_authCode = -3;
+        rsp.m_authCode = -4;
         socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
@@ -108,4 +122,11 @@ void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
     rsp.m_authCode = authCode;
     rsp.m_address = *address;
     socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+
+    UserCandidateLM reqLM;
+    reqLM.m_userId = userId;
+    reqLM.m_authCode = authCode;
+    serverGroup->GetSocket()->SendData(reqLM.COMMAND, &reqLM, sizeof(reqLM));
+
+    UserManager::Instance().RemoveUser(userId);
 }
