@@ -1,4 +1,0 @@
-MetazionWorld
-=============
-
-MMO Game Servers
