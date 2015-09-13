@@ -13,13 +13,11 @@ public:
     ~ServerSocketCG() {}
 
 protected:
-    void OnConnected() override final;
+    void DerivedReset() override final;
 
-    void OnDisconnected() override final;
+    void DerivedOnConnected() override final;
 
-    void OnValidPacket(int command, const void* data, int length) override final;
-
-    void OnInvalidPacket() override final;
+    void DerivedOnDisconnected() override final;
 };
 
 
@@ -35,11 +33,11 @@ public:
     ~ListenSocketCG() {}
 
 protected:
-    void OnWatched() override final;
+    void DerivedReset() override final;
 
-    void OnUnwatched() override final;
+    void DerivedOnWatched() override final;
 
-    ServerSocketCG* CreateServerSocket() override final;
+    void DerivedOnUnwatched() override final;
 
 private:
     ServerSocketPool_t m_socketPool;
@@ -54,13 +52,11 @@ public:
     ~ServerSocketWG() {}
 
 protected:
-    void OnConnected() override final;
+    void DerivedReset() override final;
 
-    void OnDisconnected() override final;
+    void DerivedOnConnected() override final;
 
-    void OnValidPacket(int command, const void* data, int length) override final;
-
-    void OnInvalidPacket() override final;
+    void DerivedOnDisconnected() override final;
 };
 
 
@@ -76,11 +72,11 @@ public:
     ~ListenSocketWG() {}
 
 protected:
-    void OnWatched() override final;
+    void DerivedReset() override final;
 
-    void OnUnwatched() override final;
+    void DerivedOnWatched() override final;
 
-    ServerSocketWG* CreateServerSocket() override final;
+    void DerivedOnUnwatched() override final;
 
 private:
     ServerSocketPool_t m_socketPool;

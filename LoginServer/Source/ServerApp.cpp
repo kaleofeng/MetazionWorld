@@ -21,9 +21,6 @@ void ServerApp::Initialize() {
     m_serverGroupManager.Initialize();
 
     m_networkService.Initialize(1024, 8);
-
-    ::memset(m_sockets, 0, sizeof(m_sockets));
-    m_socketArray.Attach(m_sockets, 1024, 0);
     
     const auto& loginConfig = m_serverConfigManager.GetLoginConfig();
 
@@ -34,7 +31,7 @@ void ServerApp::Initialize() {
     listenSocketCL->Retain();
     listenSocketCL->SetLocalHost(hostCl);
     listenSocketCL->Listen(100);
-    m_networkService.Attach(listenSocketCL);
+    m_networkService.Manage(listenSocketCL);
 
     Host hostWL;
     hostWL.FromAddress(loginConfig.m_privateAddress);
@@ -43,12 +40,10 @@ void ServerApp::Initialize() {
     listenSocketWL->Retain();
     listenSocketWL->SetLocalHost(hostWL);
     listenSocketWL->Listen(100);
-    m_networkService.Attach(listenSocketWL);
+    m_networkService.Manage(listenSocketWL);
 }
 
 void ServerApp::Finalize() {
-    m_socketArray.Detach();
-
     m_networkService.Finalize();
 
     m_serverGroupManager.Finalize();
@@ -60,15 +55,5 @@ void ServerApp::Finalize() {
 }
 
 void ServerApp::Tick() {
-    const auto size = m_networkService.LockSockets([](Socket* socket) {
-            return socket->GetType() != SOCKET_TCP_LISTEN;
-        }, m_socketArray);
-
-    for (auto i = 0; i < size; ++i) {
-        auto socket = m_socketArray[i];
-        MZ_ASSERT_TRUE(!NS_MZ::IsNull(socket));
-        socket->Dispatch();
-    }
-
-    m_networkService.UnlockSockets(m_socketArray);
+    m_networkService.Tick();
 }

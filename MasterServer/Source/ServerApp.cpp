@@ -21,17 +21,12 @@ void ServerApp::Initialize() {
 
     m_networkService.Initialize(1024, 8);
 
-    ::memset(m_sockets, 0, sizeof(m_sockets));
-    m_socketArray.Attach(m_sockets, 1024, 0);
-    
     ListenFromWorld();
     ConnectToGateway();
     ConnectToLogin();
 }
 
 void ServerApp::Finalize() {
-    m_socketArray.Detach();
-
     m_networkService.Finalize();
 
     m_serverConfigManager.Finalize();
@@ -42,17 +37,7 @@ void ServerApp::Finalize() {
 }
 
 void ServerApp::Tick() {
-    const auto size = m_networkService.LockSockets([](Socket* socket) {
-            return socket->GetType() != SOCKET_TCP_LISTEN;
-        }, m_socketArray);
-
-    for (auto i = 0; i < size; ++i) {
-        auto socket = m_socketArray[i];
-        MZ_ASSERT_TRUE(!NS_MZ::IsNull(socket));
-        socket->Dispatch();
-    }
-
-    m_networkService.UnlockSockets(m_socketArray);
+    m_networkService.Tick();
 }
 
 void ServerApp::ListenFromWorld() {
@@ -65,7 +50,7 @@ void ServerApp::ListenFromWorld() {
     listenSocket->Retain();
     listenSocket->SetLocalHost(hostWM);
     listenSocket->Listen(100);
-    m_networkService.Attach(listenSocket);
+    m_networkService.Manage(listenSocket);
 }
 
 void ServerApp::ConnectToGateway() {
@@ -76,10 +61,10 @@ void ServerApp::ConnectToGateway() {
 
     m_socketMG = new ClientSocketMG();
     m_socketMG->Retain();
-    m_socketMG->SetRemoteHost(hostMG);
-    m_socketMG->SetReconnectInterval(10000);
-    m_socketMG->Connect();
-    m_networkService.Attach(m_socketMG);
+    m_socketMG->m_connecter.SetRemoteHost(hostMG);
+    m_socketMG->m_connecter.SetReconnectInterval(10000);
+    m_socketMG->m_connecter.Connect();
+    m_networkService.Manage(m_socketMG);
 }
 
 void ServerApp::ConnectToLogin() {
@@ -90,8 +75,8 @@ void ServerApp::ConnectToLogin() {
 
     m_socketML = new ClientSocketML();
     m_socketML->Retain();
-    m_socketML->SetRemoteHost(hostML);
-    m_socketML->SetReconnectInterval(10000);
-    m_socketML->Connect();
-    m_networkService.Attach(m_socketML);
+    m_socketML->m_connecter.SetRemoteHost(hostML);
+    m_socketML->m_connecter.SetReconnectInterval(10000);
+    m_socketML->m_connecter.Connect();
+    m_networkService.Manage(m_socketML);
 }

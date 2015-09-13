@@ -42,7 +42,7 @@ void PacketHandlerLM::HandleConnected(const void* data, int length) {
         outputStream.WriteUint32(address.m_ip);
         outputStream.WriteUint16(address.m_port);
     }
-    g_serverApp->m_socketML->SendData(COMMAND_ML_SERVERREGISTER
+    g_serverApp->m_socketML->m_packeter.SendData(COMMAND_ML_SERVERREGISTER
         , outputStream.GetBuffer(), outputStream.GetLength());
 }
 

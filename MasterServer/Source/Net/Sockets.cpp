@@ -5,72 +5,84 @@
 
 #include "ServerApp.hpp"
 
-void ServerSocketWM::OnConnected() {
+void ServerSocketWM::DerivedReset() {
+    m_packeter.SetValidPacketCallback([this](int command, const void* data, int length) {
+        g_serverApp->m_packetHandlerWM.Handle(this, command, data, length);
+    });
+
+    m_packeter.SetInvalidPacketCallback([this]() {
+        Close();
+    });
+}
+
+void ServerSocketWM::DerivedOnConnected() {
     ::printf("ServerSocket from World Connected\n");
 }
 
-void ServerSocketWM::OnDisconnected() {
+void ServerSocketWM::DerivedOnDisconnected() {
     ::printf("ServerSocket from World Disconnected\n");
 }
 
-void ServerSocketWM::OnValidPacket(int command, const void* data, int length) {
-    g_serverApp->m_packetHandlerWM.Handle(this, command, data, length);
+
+void ListenSocketWM::DerivedReset() {
+    m_accepter.SetCreateSocketCallback([this]() {
+        auto serverSocket = m_socketPool.Obtain();
+        serverSocket->Reset();
+        serverSocket->Retain();
+        serverSocket->SetDestroyCallback([&](Socket* socket) {
+            auto dstSocket = static_cast<ServerSocketWM*>(socket);
+            m_socketPool.Return(dstSocket);
+        });
+        return serverSocket;
+    });
 }
 
-void ServerSocketWM::OnInvalidPacket() {
-    Close();
-}
-
-
-void ListenSocketWM::OnWatched() {
+void ListenSocketWM::DerivedOnWatched() {
     ::printf("ListenSocket for World Watched\n");
 }
 
-void ListenSocketWM::OnUnwatched() {
+void ListenSocketWM::DerivedOnUnwatched() {
     ::printf("ListenSocket for World Unwatched\n");
 }
 
-ServerSocketWM* ListenSocketWM::CreateServerSocket() {
-    auto socket = m_socketPool.Obtain();
-    socket->Reset();
-    socket->Retain();
-    return socket;
+
+void ClientSocketML::DerivedReset() {
+    m_packeter.SetValidPacketCallback([this](int command, const void* data, int length) {
+        g_serverApp->m_packetHandlerLM.Handle(command, data, length);
+    });
+
+    m_packeter.SetInvalidPacketCallback([this]() {
+        Close();
+    });
 }
 
-
-void ClientSocketML::OnConnected() {
+void ClientSocketML::DerivedOnConnected() {
     ::printf("ClientSocket to Login Connected\n");
-    PostData(COMMAND_LM_CONNECTED, nullptr, 0);
+    m_packeter.PostData(COMMAND_LM_CONNECTED, nullptr, 0);
 }
 
-void ClientSocketML::OnDisconnected() {
+void ClientSocketML::DerivedOnDisconnected() {
     ::printf("ClientSocket to Login Disconnected\n");
-    PostData(COMMAND_LM_DISCONNECTED, nullptr, 0);
-}
-
-void ClientSocketML::OnValidPacket(int command, const void* data, int length) {
-    g_serverApp->m_packetHandlerLM.Handle(command, data, length);
-}
-
-void ClientSocketML::OnInvalidPacket() {
-    Close();
+    m_packeter.PostData(COMMAND_LM_DISCONNECTED, nullptr, 0);
 }
 
 
-void ClientSocketMG::OnConnected() {
+void ClientSocketMG::DerivedReset() {
+    m_packeter.SetValidPacketCallback([this](int command, const void* data, int length) {
+        g_serverApp->m_packetHandlerGM.Handle(command, data, length);
+    });
+
+    m_packeter.SetInvalidPacketCallback([this]() {
+        Close();
+    });
+}
+
+void ClientSocketMG::DerivedOnConnected() {
     ::printf("ClientSocket to Gateway Connected\n");
-    PostData(COMMAND_GM_CONNECTED, nullptr, 0);
+    m_packeter.PostData(COMMAND_GM_CONNECTED, nullptr, 0);
 }
 
-void ClientSocketMG::OnDisconnected() {
+void ClientSocketMG::DerivedOnDisconnected() {
     ::printf("ClientSocket to Gateway Disconnected\n");
-    PostData(COMMAND_GM_DISCONNECTED, nullptr, 0);
-}
-
-void ClientSocketMG::OnValidPacket(int command, const void* data, int length) {
-    g_serverApp->m_packetHandlerGM.Handle(command, data, length);
-}
-
-void ClientSocketMG::OnInvalidPacket() {
-    Close();
+    m_packeter.PostData(COMMAND_GM_DISCONNECTED, nullptr, 0);
 }

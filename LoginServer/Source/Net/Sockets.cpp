@@ -2,36 +2,44 @@
 
 #include "ServerApp.hpp"
 
-void ServerSocketCL::OnConnected() {
+void ServerSocketCL::DerivedReset() {
+    m_packeter.SetValidPacketCallback([this](int command, const void* data, int length) {
+        g_serverApp->m_packetHandlerCL.Handle(this, command, data, length);
+    });
+
+    m_packeter.SetInvalidPacketCallback([this]() {
+        Close();
+    });
+}
+
+void ServerSocketCL::DerivedOnConnected() {
     ::printf("ServerSocket from Client Connected\n");
 }
 
-void ServerSocketCL::OnDisconnected() {
+void ServerSocketCL::DerivedOnDisconnected() {
     ::printf("ServerSocket from Client Disconnected\n");
 }
 
-void ServerSocketCL::OnValidPacket(int command, const void* data, int length) {
-    g_serverApp->m_packetHandlerCL.Handle(this, command, data, length);
+
+void ListenSocketCL::DerivedReset() {
+    m_accepter.SetCreateSocketCallback([this]() {
+        auto serverSocket = m_socketPool.Obtain();
+        serverSocket->Reset();
+        serverSocket->Retain();
+        serverSocket->SetDestroyCallback([&](Socket* socket) {
+            auto dstSocket = static_cast<ServerSocketCL*>(socket);
+            m_socketPool.Return(dstSocket);
+        });
+        return serverSocket;
+    });
 }
 
-void ServerSocketCL::OnInvalidPacket() {
-    Close();
-}
-
-
-void ListenSocketCL::OnWatched() {
+void ListenSocketCL::DerivedOnWatched() {
     ::printf("ListenSocket for Client Watched\n");
 }
 
-void ListenSocketCL::OnUnwatched() {
+void ListenSocketCL::DerivedOnUnwatched() {
     ::printf("ListenSocket for Client Unwatched\n");
-}
-
-ServerSocketCL* ListenSocketCL::CreateServerSocket() {
-    auto socket = m_socketPool.Obtain();
-    socket->Reset();
-    socket->Retain();
-    return socket;
 }
 
 
@@ -43,34 +51,42 @@ void ServerSocketWL::BindObject(ServerGroup* object) {
     m_serverGroup = object;
 }
 
-void ServerSocketWL::OnConnected() {
+void ServerSocketWL::DerivedReset() {
+    m_packeter.SetValidPacketCallback([this](int command, const void* data, int length) {
+        g_serverApp->m_packetHandlerWL.Handle(this, command, data, length);
+    });
+
+    m_packeter.SetInvalidPacketCallback([this]() {
+        Close();
+    });
+}
+
+void ServerSocketWL::DerivedOnConnected() {
     ::printf("ServerSocket from World Connected\n");
 }
 
-void ServerSocketWL::OnDisconnected() {
+void ServerSocketWL::DerivedOnDisconnected() {
     ::printf("ServerSocket from World Disconnected\n");
 }
 
-void ServerSocketWL::OnValidPacket(int command, const void* data, int length) {
-    g_serverApp->m_packetHandlerWL.Handle(this, command, data, length);
+
+void ListenSocketWL::DerivedReset() {
+    m_accepter.SetCreateSocketCallback([this]() {
+        auto serverSocket = m_socketPool.Obtain();
+        serverSocket->Reset();
+        serverSocket->Retain();
+        serverSocket->SetDestroyCallback([&](Socket* socket) {
+            auto dstSocket = static_cast<ServerSocketWL*>(socket);
+            m_socketPool.Return(dstSocket);
+        });
+        return serverSocket;
+    });
 }
 
-void ServerSocketWL::OnInvalidPacket() {
-    Close();
-}
-
-
-void ListenSocketWL::OnWatched() {
+void ListenSocketWL::DerivedOnWatched() {
     ::printf("ListenSocket for World Watched\n");
 }
 
-void ListenSocketWL::OnUnwatched() {
+void ListenSocketWL::DerivedOnUnwatched() {
     ::printf("ListenSocket for World Unwatched\n");
-}
-
-ServerSocketWL* ListenSocketWL::CreateServerSocket() {
-    auto socket = m_socketPool.Obtain();
-    socket->Reset();
-    socket->Retain();
-    return socket;
 }

@@ -1,7 +1,7 @@
 #ifndef _MASTERSERVER_SERVERAPP_HPP_
 #define _MASTERSERVER_SERVERAPP_HPP_
 
-#include <Metazion/Net/AppNetworkService.hpp>
+#include <Metazion/Net/NetworkService.hpp>
 
 #include "Common/Server/ServerConfigManager.hpp"
 
@@ -41,9 +41,7 @@ public:
     PacketHandlerWM m_packetHandlerWM;
 
 private:
-    NS_MZ_NET::AppNetworkService m_networkService;
-    NS_MZ_NET::AppNetworkService::SocketArray_t m_socketArray;
-    NS_MZ_NET::Socket* m_sockets[1024];
+    NS_MZ_NET::NetworkService m_networkService;
 };
 
 extern ServerApp* g_serverApp;

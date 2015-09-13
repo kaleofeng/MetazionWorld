@@ -49,14 +49,14 @@ void PacketHandlerCL::HandleUserLogin(ServerSocketCL* socket
     if (!success) {
         UserLoginLC rsp;
         rsp.m_success = false;
-        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
     UserLoginLC rsp;
     rsp.m_userId = 1000000000001;
     rsp.m_success = true;
-    socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+    socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
 
     NS_MZ_SHARE::MemoryOutputStream<> outputStream;
     const auto serverGroupSize = g_serverApp->m_serverGroupManager.GetServerGroupSize();
@@ -72,7 +72,7 @@ void PacketHandlerCL::HandleUserLogin(ServerSocketCL* socket
         outputStream.WriteString(name, NS_MZ_SHARE::mzstrlen(name));
         outputStream.WriteInt8(status);
     }
-    socket->SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
+    socket->m_packeter.SendData(COMMAND_LC_SERVERLIST, outputStream.GetBuffer(), outputStream.GetLength());
 
     User user;
     user.SetUserId(rsp.m_userId);
@@ -90,7 +90,7 @@ void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
     User* user = UserManager::Instance().GetUser(userId);
     if (NS_MZ::IsNull(user)) {
         rsp.m_authCode = -1;
-        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
@@ -98,21 +98,21 @@ void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
     const auto serverGroup = g_serverApp->m_serverGroupManager.GetServerGroup(serverId);
     if (NS_MZ::IsNull(serverGroup)) {
         rsp.m_authCode = -2;
-        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
     const auto status = serverGroup->GetStatus();
     if (status == 0) {
         rsp.m_authCode = -3;
-        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
     const auto address = serverGroup->SelectRandomAddress();
     if (NS_MZ::IsNull(address)) {
         rsp.m_authCode = -4;
-        socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+        socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
         return;
     }
 
@@ -121,12 +121,12 @@ void PacketHandlerCL::HandleSelectServer(ServerSocketCL* socket
 
     rsp.m_authCode = authCode;
     rsp.m_address = *address;
-    socket->SendData(rsp.COMMAND, &rsp, sizeof(rsp));
+    socket->m_packeter.SendData(rsp.COMMAND, &rsp, sizeof(rsp));
 
     UserCandidateLM reqLM;
     reqLM.m_userId = userId;
     reqLM.m_authCode = authCode;
-    serverGroup->GetSocket()->SendData(reqLM.COMMAND, &reqLM, sizeof(reqLM));
+    serverGroup->GetSocket()->m_packeter.SendData(reqLM.COMMAND, &reqLM, sizeof(reqLM));
 
     UserManager::Instance().RemoveUser(userId);
 }
