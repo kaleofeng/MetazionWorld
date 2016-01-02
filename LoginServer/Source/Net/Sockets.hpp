@@ -7,6 +7,7 @@
 
 class ServerSocketCL
     : public NS_MZ_NET::AppServerSocket {
+
 public:
     ServerSocketCL() {}
 
@@ -27,6 +28,9 @@ class ListenSocketCL
     typedef NS_MZ_SHARE::ObjectPool<ServerSocketCL
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
+private:
+    ServerSocketPool_t m_socketPool;
+
 public:
     ListenSocketCL() {}
 
@@ -38,9 +42,6 @@ protected:
     void DerivedOnWatched() override final;
 
     void DerivedOnUnwatched() override final;
-
-private:
-    ServerSocketPool_t m_socketPool;
 };
 
 
@@ -48,6 +49,10 @@ class ServerGroup;
 
 class ServerSocketWL
     : public NS_MZ_NET::AppServerSocket {
+
+private:
+    ServerGroup* m_serverGroup;
+
 public:
     ServerSocketWL()
         : m_serverGroup(nullptr) {}
@@ -65,9 +70,6 @@ protected:
     void DerivedOnConnected() override final;
 
     void DerivedOnDisconnected() override final;
-
-private:
-    ServerGroup* m_serverGroup;
 };
 
 
@@ -76,6 +78,9 @@ class ListenSocketWL
 
     typedef NS_MZ_SHARE::ObjectPool<ServerSocketWL
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
+
+private:
+    ServerSocketPool_t m_socketPool;
 
 public:
     ListenSocketWL() {}
@@ -88,9 +93,6 @@ protected:
     void DerivedOnWatched() override final;
 
     void DerivedOnUnwatched() override final;
-
-private:
-    ServerSocketPool_t m_socketPool;
 };
 
 #endif // _LOGINSERVER_SOCKETS_HPP_

@@ -10,6 +10,17 @@
 #include "Net/PacketHandlerWL.hpp"
 
 class ServerApp {
+
+public:
+    ServerConfigManager m_serverConfigManager;
+    ServerGroupManager m_serverGroupManager;
+
+    PacketHandlerCL m_packetHandlerCL;
+    PacketHandlerWL m_packetHandlerWL;
+
+private:
+    NS_MZ_NET::NetworkService m_networkService;
+
 public:
     ServerApp();
 
@@ -21,16 +32,6 @@ public:
     void Finalize();
 
     void Tick();
-
-public:
-    ServerConfigManager m_serverConfigManager;
-    ServerGroupManager m_serverGroupManager;
-
-    PacketHandlerCL m_packetHandlerCL;
-    PacketHandlerWL m_packetHandlerWL;
-
-private:
-    NS_MZ_NET::NetworkService m_networkService;
 };
 
 extern ServerApp* g_serverApp;

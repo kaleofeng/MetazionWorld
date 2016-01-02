@@ -7,6 +7,7 @@
 
 class ServerSocketCG
     : public NS_MZ_NET::AppServerSocket {
+
 public:
     ServerSocketCG() {}
 
@@ -27,6 +28,9 @@ class ListenSocketCG
     typedef NS_MZ_SHARE::ObjectPool<ServerSocketCG
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
+private:
+    ServerSocketPool_t m_socketPool;
+
 public:
     ListenSocketCG() {}
 
@@ -38,14 +42,12 @@ protected:
     void DerivedOnWatched() override final;
 
     void DerivedOnUnwatched() override final;
-
-private:
-    ServerSocketPool_t m_socketPool;
 };
 
 
 class ServerSocketWG
     : public NS_MZ_NET::AppServerSocket {
+
 public:
     ServerSocketWG() {}
 
@@ -66,6 +68,9 @@ class ListenSocketWG
     typedef NS_MZ_SHARE::ObjectPool<ServerSocketWG
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
+private:
+    ServerSocketPool_t m_socketPool;
+
 public:
     ListenSocketWG() {}
 
@@ -77,9 +82,6 @@ protected:
     void DerivedOnWatched() override final;
 
     void DerivedOnUnwatched() override final;
-
-private:
-    ServerSocketPool_t m_socketPool;
 };
 
 #endif // _GATEWAYSERVER_SOCKETS_HPP_

@@ -6,8 +6,12 @@
 #include "ServerGroup.hpp"
 
 class ServerGroupManager {
+
 public:
     using ServerGroupMap_t = NS_MZ_SHARE::Map<int, ServerGroup>;
+
+private:
+    ServerGroupMap_t m_serverGroupMap;
 
 public:
     ServerGroupManager();
@@ -28,9 +32,6 @@ public:
 
 private:
     void LoadAllServerGroup();
-
-private:
-    ServerGroupMap_t m_serverGroupMap;
 };
 
 

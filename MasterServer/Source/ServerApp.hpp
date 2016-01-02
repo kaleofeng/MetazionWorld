@@ -11,6 +11,20 @@
 #include "Net/Sockets.hpp"
 
 class ServerApp {
+
+public:
+    ServerConfigManager m_serverConfigManager;
+
+    ClientSocketMG* m_socketMG;
+    ClientSocketML* m_socketML;
+
+    PacketHandlerGM m_packetHandlerGM;
+    PacketHandlerLM m_packetHandlerLM;
+    PacketHandlerWM m_packetHandlerWM;
+
+private:
+    NS_MZ_NET::NetworkService m_networkService;
+
 public:
     ServerApp();
 
@@ -29,19 +43,6 @@ private:
     void ConnectToGateway();
 
     void ConnectToLogin();
-
-public:
-    ServerConfigManager m_serverConfigManager;
-
-    ClientSocketMG* m_socketMG;
-    ClientSocketML* m_socketML;
-
-    PacketHandlerGM m_packetHandlerGM;
-    PacketHandlerLM m_packetHandlerLM;
-    PacketHandlerWM m_packetHandlerWM;
-
-private:
-    NS_MZ_NET::NetworkService m_networkService;
 };
 
 extern ServerApp* g_serverApp;

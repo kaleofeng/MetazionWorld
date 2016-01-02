@@ -8,6 +8,7 @@
 
 class ServerSocketWM
     : public NS_MZ_NET::AppServerSocket {
+
 public:
     ServerSocketWM() {}
 
@@ -28,6 +29,9 @@ class ListenSocketWM
     typedef NS_MZ_SHARE::ObjectPool<ServerSocketWM
         , NS_MZ_SHARE::StepAllocator<512>> ServerSocketPool_t;
 
+private:
+    ServerSocketPool_t m_socketPool;
+
 public:
     ListenSocketWM() {}
 
@@ -39,14 +43,12 @@ protected:
     void DerivedOnWatched() override final;
 
     void DerivedOnUnwatched() override final;
-
-private:
-    ServerSocketPool_t m_socketPool;
 };
 
 
 class ClientSocketML
     : public NS_MZ_NET::AppClientSocket {
+
 public:
     ClientSocketML() {}
 
@@ -63,6 +65,7 @@ protected:
 
 class ClientSocketMG
     : public NS_MZ_NET::AppClientSocket {
+
 public:
     ClientSocketMG() {}
 

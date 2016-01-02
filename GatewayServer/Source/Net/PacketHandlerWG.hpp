@@ -4,6 +4,7 @@
 #include "Net/Sockets.hpp"
 
 class PacketHandlerWG {
+
 public:
     PacketHandlerWG() {}
 

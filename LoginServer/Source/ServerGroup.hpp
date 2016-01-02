@@ -9,7 +9,17 @@
 class ServerSocketWL;
 
 class ServerGroup {
+
+private:
     using AddressArray_t = NS_MZ_SHARE::DynamicArray<NS_MZ_NET::Address, 4, 4>;
+
+private:
+    int m_id;
+    char m_name[64];
+    int m_status;
+    AddressArray_t m_addressArray;
+
+    ServerSocketWL* m_socket;
 
 public:
     ServerGroup();
@@ -50,17 +60,7 @@ public:
 
     void BindSocket(ServerSocketWL* socket);
     ServerSocketWL* GetSocket();
-
-private:
-    int m_id;
-    char m_name[64];
-    int m_status;
-    AddressArray_t m_addressArray;
-
-    ServerSocketWL* m_socket;
 };
-
-
 
 #endif // _LOGINSERVER_SERVERGROUP_H_
 

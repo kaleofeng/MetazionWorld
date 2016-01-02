@@ -6,7 +6,15 @@
 #include "Common/Struct.hpp"
 
 class ServerConfigManager {
+
     using GatewayInfoMap_t = NS_MZ_SHARE::Map<int, ServerInfo>;
+
+private:
+    ServerConfig m_loginConfig;
+    ServerConfig m_masterConfig;
+    ServerConfig m_gatewayConfig;
+    ServerConfig m_zoneConfig;
+    GatewayInfoMap_t m_gatewayInfoMap;
 
 public:
     ServerConfigManager();
@@ -39,13 +47,6 @@ private:
     void LoadGatewayConfig();
     void LoadZoneConfig();
     void LoadGatewayList();
-
-private:
-    ServerConfig m_loginConfig;
-    ServerConfig m_masterConfig;
-    ServerConfig m_gatewayConfig;
-    ServerConfig m_zoneConfig;
-    GatewayInfoMap_t m_gatewayInfoMap;
 };
 
 #endif // _MASTERSERVER_SERVERCONFIGMANAGER_HPP_

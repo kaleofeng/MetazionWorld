@@ -1,15 +1,15 @@
 cd Common
-CMakeWindows.sh
+sh CMakeWindows.sh
 cd ..
 
 cd LoginServer
-CMakeWindows.sh
+sh CMakeWindows.sh
 cd ..
 
 cd GatewayServer
-CMakeWindows.sh
+sh CMakeWindows.sh
 cd ..
 
 cd MasterServer
-CMakeWindows.sh
+sh CMakeWindows.sh
 cd ..

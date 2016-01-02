@@ -4,6 +4,11 @@
 #include <cstdint>
 
 class User {
+
+private:
+    int64_t m_userId;
+    int64_t m_authCode;
+
 public:
     User();
 
@@ -25,10 +30,6 @@ public:
     void SetAuthCode(int64_t value) {
         m_authCode = value;
     }
-
-private:
-    int64_t m_userId;
-    int64_t m_authCode;
 };
 
 #endif //_MASTERSERVER_USER_HPP_
